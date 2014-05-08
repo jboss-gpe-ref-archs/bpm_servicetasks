@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlType;
     "numberOfTickets",
     "ssn"
 })
-public class Driver {
+public class Driver implements java.io.Serializable {
 
     protected Integer age;
     protected Integer creditScore;

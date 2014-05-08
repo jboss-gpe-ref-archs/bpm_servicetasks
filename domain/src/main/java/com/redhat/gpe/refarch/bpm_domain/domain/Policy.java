@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlType;
     "vehicleYear"
 })
 @XmlRootElement(name="Policy")
-public class Policy {
+public class Policy implements java.io.Serializable {
 
     protected Driver driver;
     protected String policyType;
