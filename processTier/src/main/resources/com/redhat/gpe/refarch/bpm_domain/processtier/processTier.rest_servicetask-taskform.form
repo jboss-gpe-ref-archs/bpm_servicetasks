@@ -1,0 +1,43 @@
+
+<form id="307285550">
+<property name="subject" value=""/>
+<property name="name" value="processTier.rest_servicetask-taskform.form"/>
+<property name="displayMode" value="default"/>
+<property name="status" value="0"/>
+<field position="2" name="policy_price" type="InputTextInteger" id="672250607">
+<property name="fieldRequired" value="false"/>
+<property name="label" value="quot;enquot;,quot;price (policy)quot;"/>
+<property name="inputBinding" value=""/>
+<property name="outputBinding" value="policy/price"/>
+<property name="fieldClass" value="java.lang.Integer"/>
+</field>
+<field position="3" name="policy_priceDiscount" type="InputTextInteger" id="1794201236">
+<property name="fieldRequired" value="false"/>
+<property name="label" value="quot;enquot;,quot;priceDiscount (policy)quot;"/>
+<property name="inputBinding" value=""/>
+<property name="outputBinding" value="policy/priceDiscount"/>
+<property name="fieldClass" value="java.lang.Integer"/>
+</field>
+<field position="0" name="policy_driver" type="Subform" id="70207806">
+<property name="fieldRequired" value="false"/>
+<property name="label" value="quot;enquot;,quot;driver (policy)quot;"/>
+<property name="inputBinding" value=""/>
+<property name="outputBinding" value="policy/driver"/>
+<property name="fieldClass" value="java.lang.Object"/>
+</field>
+<field position="4" name="policy_vehicleYear" type="InputTextInteger" id="1200620136">
+<property name="fieldRequired" value="false"/>
+<property name="label" value="quot;enquot;,quot;vehicleYear (policy)quot;"/>
+<property name="inputBinding" value=""/>
+<property name="outputBinding" value="policy/vehicleYear"/>
+<property name="fieldClass" value="java.lang.Integer"/>
+</field>
+<field position="1" name="policy_policyType" type="InputText" id="1757527266">
+<property name="fieldRequired" value="false"/>
+<property name="label" value="quot;enquot;,quot;policyType (policy)quot;"/>
+<property name="inputBinding" value=""/>
+<property name="outputBinding" value="policy/policyType"/>
+<property name="fieldClass" value="java.lang.String"/>
+</field>
+<dataHolder supportedType="className" inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_domain.domain.Policy" id="policy"/>
+</form>
