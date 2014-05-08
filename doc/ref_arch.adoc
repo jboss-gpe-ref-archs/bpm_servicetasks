@@ -1,0 +1,45 @@
+:data-uri:
+:toc2:
+:rhtlink: link:https://www.redhat.com[Red Hat]
+
+image::images/rhheader.png[width=900]
+
+:numbered!:
+[abstract]
+== JBoss GPE Reference Architecture:  Template
+
+:numbered:
+
+== Abstract
+
+== Overview
+
+== Pre-Requisites
+
+== Procedure
+* For the purposes of this documentation, the name _$REF_ARCH_HOME_ refers to the root directory of this reference architecture.
+
+== Performance Testing
+* JMeter is used to drive testing of the reference architecture.
+* You do not need to download a seperate JMeter binary nor source distribution
+* Instead, JMeter will be downloaded, installed and appropriately configured as part of the configuration found in $REF_ARCH_HOME/loadtest
+* jmeter maven plugin
+** Notice use of the com.lazerycode.jmeter:jmeter-maven-plugin in _$REF_ARCH_HOME/loadtest/pom.xml_ 
+** This maven plugin downloads, installs and appropriately configures JMeter
+** This maven plugin is also used to drive test scenarios
+* ref_arch.jmx
+** A sample default jmeter load test definition file is included in: $REF_ARCH_HOME/loadtest/src/test/jmeter/ref_arch.jmx
+** This jmeter load test definition file can be viewed and manipulated via the JMeter GUI by:
+*** cd $REF_ARCH_HOME/loadtest
+** Notice that the default, OOB configuration is to spawn a single client that invokes a single test case
+** ./jmeter_gui.sh
+* Java Sampler
+** Also included is an example Java _Sampler_ at:  $REF_ARCH_HOME/loadtest/src/test/java/com/redhat/gpe/refarch/bpm_domain/loadtest/ExampleJMeterClient.java
+** The use of a JMeter _sampler_ class is optional
+** cd $REF_ARCH_HOME/loadtest
+** mvn clean verify
+
+== To-Do
+. resolve this problem
+. resolve that problem
+=======

@@ -1,0 +1,18 @@
+:data-uri:
+:toc2:
+:ref_arch_doc: link:doc/ref_arch.adoc[project documentation]
+
+image::doc/images/rhheader.png[width=900]
+
+:numbered!:
+
+== PURPOSE:
+* sentence or 
+* two on the purpose of this ref arch
+
+== OVERVIEW:
+short paragraph 
+
+or two that highlights what the reader is going to learn.  It's nice to have a high-level overview of the data flow and deployment architecture ... although avoid too many details at this point.
+
+This section should also link to the {ref_arch_doc}.

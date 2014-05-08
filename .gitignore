@@ -1,0 +1,15 @@
+target/
+.settings
+.classpath
+.project
+*.class
+*.git/
+*~
+~lock.*
+~$*
+.DS_Store
+*.svn/
+*.nogit/
+*.html
+*.log
+*.attach*
