@@ -10,8 +10,18 @@ image::images/rhheader.png[width=900]
 
 :numbered:
 
-== Abstract
+== Overview
 
+=== BPMN2 ServiceTask 
+
+image::images/bpmnservicetask.png[]
+
+=== REST ServiceTask 
+
+image::images/bpmnservicetask.png[]
+
+=== JMS ServiceTask 
+to-do
 
 == Pre-Requisites
 The remainder of this documentation provides instructions for installation, configuration and execution of this reference architecture. 
@@ -98,13 +108,15 @@ image::images/deployment.png[]
 
 
 === BPM Suite 6:  Upload and Enable Services
-In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via various standard transports:  REST, SOAP and JMS.
-Upload and enable these services to your remote JBoss environment via following procedure:
+In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via standard transports:  REST, SOAP and JMS.
+These services are implemented utilizing stock JEE functionality provided by the underlying JBoss Enterprise Application Platform.
+Upload and enable these services to your remote JBoss EAP environment via following procedure:
 
 . Navigate your browser to the JBoss EAP Management console
 . Click: Runtime -> Manage Deployments -> Add
 . In the _Create Deployment_ pop-up, click _Choose File_ and navigate to $REF_ARCH_HOME/serviceTier/target/bizservices.war
 . Once uploaded, highlight the new web artifact and click the _En/Disable_ button
+
 
 image::images/add_service.png[]
 
@@ -118,7 +130,41 @@ JBAS018559: Deployed "bizservices.war" (runtime-name : "bizservices.war")
 
 ----------
 
+All SOA services are packaged in the same _bizservices.war_ web artifact.
+
 == Manual Testing
+All BPMN2 process definitions included in the _processTier_ KIE project can be started manually via BPM Central.
+To do so, execute the following:
+
+. Navigate to:  Process Management -> Process Definitions
+. Select the _Start_ icon of any of the listed process definitions.
+. A form should appear with only a _play_ button to start that specific process.
+. Make sure your $JBOSS_HOME/standalone/log/server.log is being tailed and click this play button.
+
+=== RESULTS:  REST Service Task
+Upon starting an instance of rest_servicetask, the following should appear in the server.log:
+
+--------------
+[stdout] prepRESTCall() policyString = {"driver":{"age":22,"creditScore":null,"dlNumber":null,"driverName":"alex","numberOfAccidents":0,"numberOfTickets":1,"ssn":null},"policyType":null,"price":500,"priceDiscount":null,"vehicleYear":2014}
+[stdout] prepRESTcall() urlSting = http://192.168.5.5:8080/bizservices/policy
+[AuditReview] (http-/192.168.5.5:8080-4) reviewQuote() contentType = application/json : policyObj = 
+    policyType : null
+    price : 500
+    priceDiscount : null
+    vehicle year : 2014
+    driver : 
+        driverName : alex
+        dlNumber : null
+        age : 22
+        accidents : 0
+        tickets : 1
+        SSN : null
+        creditScore : null
+[stdout] (http-/192.168.5.5:8080-9) REST.onExit() processResults = true
+--------------
+
+The BPMN REST ServiceTask has successfully executed an HTTP POST to a RESTful service.
+The content of the HTTP request was the JSON representation of a Policy object.
 
 === BPMN2 Service Task
 
