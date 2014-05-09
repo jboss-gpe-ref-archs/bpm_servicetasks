@@ -11,7 +11,7 @@
 
   <modules>
     <module>domain</module>
-    <module>service</module>
+    <module>serviceTier</module>
   </modules>
 
 

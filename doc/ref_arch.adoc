@@ -6,38 +6,99 @@ image::images/rhheader.png[width=900]
 
 :numbered!:
 [abstract]
-== JBoss GPE Reference Architecture:  Template
+== Red Hat GPE Reference Architecture:  BPM Service Tasks
 
 :numbered:
 
 == Abstract
 
-== Overview
 
 == Pre-Requisites
+The remainder of this documentation provides instructions for installation, configuration and execution of this reference architecture. 
+The following is a list of pre-requisites:
 
-== Procedure
-* For the purposes of this documentation, the name _$REF_ARCH_HOME_ refers to the root directory of this reference architecture.
+. maven 3.0.5 (or greater)
+. git client
+. familiarity with {bpmproduct}
+. proficiency with the _bash_ shell 
+
+== Configuration and Deployment:  Local Environment
+
+=== local:  Clone this reference architecture
+This reference architecture will be cloned both in your local computer as well as in your remote BPM Suite 6 Openshift environment.
+To clone this reference architecture in your local environment, execute the following:
+
+--------
+git clone https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
+--------
+
+Doing so will create a directory in your local computer called:  bpm_servicetasks.
+For the purposes of this documentation, this directory will be referred to as $REF_ARCH_HOME.
+
+=== local: Build the Reference Architecture
+This reference architecture includes various sub-projects that need to be built locally. 
+To build the various sub-projects, execute the following:
+
+. cd $REF_ARCH_HOME
+. mvn clean install
+
+== Configuration and Deployment:  BPM Suite 6
+
+=== BPM Suite 6:  Clone this reference architecture
+This reference architecture includes a KIE project called: _processTier_ .
+The _processTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
+
+Use the following steps to clone this reference architecture in BPM Suite 6:
+
+. Log into the Business-Central web application of BPM Suite 6 and navigate to:  Authoring -> Administration.
+. Select `Organizational Units` -> `Manage Organizational Units`
+. Under `Organizational Unit Manager`, select the `Add` button
+. Enter a name of _gpe_ and an owner of _jboss_. Click `OK`
+. Clone this fsw_bpms_integration repository in BPM Suite 6
+.. Select `Repositories` -> `Clone Repository` .  
+.. Populate the _Clone Repository_ box as follows and then click _Clone_ :
+
+image::images/clone_repo.png[]
+
+Enter _bpmservicetask_ as the value of the _repository name_.  
+The value of _Git URL_ is the URL to this reference architecture in github:
+
+-----
+https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
+-----
+
+Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
+
+=== BPM Suite 6:  Add domain-model jar to classpath of _processTier_ project
+The _processTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
+One approach toward making this domain model available to the _processTier_ KIE project is to manually upload libraries to the BPM Suite 6  _Artifact Repository_ and then define dependencies in the KIE project to those newly  uploaded libraries.
+
+. In your browser, navigate to :   Authoring -> Project Authoring .  Several exceptions related to the inability to find domain model classes should appear in the _Problems_ window.  This is to be expected at this time.
+. navigate to :  Authoring -> Artifact Repository -> Upload
+. In the _Artifact upload_ pop-up, select _Choose File_ and navigate to $REF_ARCH_HOME/domain/target/domain-1.0.jar in your local environment.
+. Click Upload
+
+image::images/uploaded_domain.png[]
+
+[start=5]
+. navigate to:  Authoring -> Project Authoring -> Tools -> Project Editor -> Dependencies:  Dependencies list.
+. click:  _Add from repository_ followed by _Select_ on the newly uploaded _domain-1.0.jar_ library.
+. click _Save_ .
+
+image::images/add_domain_dep.png[]
+
+
+Notice that upon saving the _processTier_ project, the previous class related problems are now resolved.
+
+=== BPM Suite 6:  Upload and Enable Services
+In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via various standard transports:  REST, SOAP and JMS.
+Upload and enable these services to your remote JBoss environment via following procedure:
+
+. Navigate your browser to the JBoss EAP Management console
+. Click: Runtime -> Manage Deployments
+
 
 == Performance Testing
-* JMeter is used to drive testing of the reference architecture.
-* You do not need to download a seperate JMeter binary nor source distribution
-* Instead, JMeter will be downloaded, installed and appropriately configured as part of the configuration found in $REF_ARCH_HOME/loadtest
-* jmeter maven plugin
-** Notice use of the com.lazerycode.jmeter:jmeter-maven-plugin in _$REF_ARCH_HOME/loadtest/pom.xml_ 
-** This maven plugin downloads, installs and appropriately configures JMeter
-** This maven plugin is also used to drive test scenarios
-* ref_arch.jmx
-** A sample default jmeter load test definition file is included in: $REF_ARCH_HOME/loadtest/src/test/jmeter/ref_arch.jmx
-** This jmeter load test definition file can be viewed and manipulated via the JMeter GUI by:
-*** cd $REF_ARCH_HOME/loadtest
-** Notice that the default, OOB configuration is to spawn a single client that invokes a single test case
-** ./jmeter_gui.sh
-* Java Sampler
-** Also included is an example Java _Sampler_ at:  $REF_ARCH_HOME/loadtest/src/test/java/com/redhat/gpe/refarch/bpm_domain/loadtest/ExampleJMeterClient.java
-** The use of a JMeter _sampler_ class is optional
-** cd $REF_ARCH_HOME/loadtest
-** mvn clean verify
 
 == To-Do
 . resolve this problem
