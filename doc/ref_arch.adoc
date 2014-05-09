@@ -141,7 +141,7 @@ To do so, execute the following:
 . A form should appear with only a _play_ button to start that specific process.
 . Make sure your $JBOSS_HOME/standalone/log/server.log is being tailed and click this play button.
 
-=== RESULTS:  REST Service Task
+=== RESULTS:  rest_servicetask
 Upon starting an instance of rest_servicetask, the following should appear in the server.log:
 
 --------------
@@ -166,7 +166,10 @@ Upon starting an instance of rest_servicetask, the following should appear in th
 The BPMN REST ServiceTask has successfully executed an HTTP POST to a RESTful service.
 The content of the HTTP request was the JSON representation of a Policy object.
 
-=== BPMN2 Service Task
+=== RESULTS:  soap_servicetask
+Upon starting an instance of soap_servicetask, the following should appear in the server.log:
+
+TO_DO:  currently experiencing problems with CXF Dynamic Dispatch
 
 
 == Performance Testing
