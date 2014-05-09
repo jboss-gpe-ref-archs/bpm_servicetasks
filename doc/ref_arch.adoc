@@ -40,7 +40,7 @@ This reference architecture includes various sub-projects that need to be built 
 To build the various sub-projects, execute the following:
 
 . cd $REF_ARCH_HOME
-. mvn clean install
+. mvn clean install -DskipTests
 
 == Configuration and Deployment:  BPM Suite 6
 
