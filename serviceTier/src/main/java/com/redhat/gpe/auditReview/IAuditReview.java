@@ -1,6 +1,6 @@
 package com.redhat.gpe.auditReview;
 
-import com.redhat.gpe.refarch.bpm_domain.domain.Policy;
+import com.redhat.gpe.refarch.bpm_servicetasks.domain.Policy;
 
 public interface IAuditReview {
 

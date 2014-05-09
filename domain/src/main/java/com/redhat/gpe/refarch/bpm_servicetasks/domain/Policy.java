@@ -1,5 +1,5 @@
 
-package com.redhat.gpe.refarch.bpm_domain.domain;
+package com.redhat.gpe.refarch.bpm_servicetasks.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

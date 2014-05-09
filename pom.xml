@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- change me -->
-  <groupId>com.redhat.gpe.refarch.bpm_domain</groupId>
+  <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
 
   <artifactId>parent</artifactId>
   <packaging>pom</packaging>

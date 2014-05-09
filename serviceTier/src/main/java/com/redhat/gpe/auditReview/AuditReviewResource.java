@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.redhat.gpe.refarch.bpm_domain.domain.Policy;
+import com.redhat.gpe.refarch.bpm_servicetasks.domain.Policy;
 
 
 
