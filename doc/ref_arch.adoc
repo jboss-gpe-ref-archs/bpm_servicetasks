@@ -95,9 +95,21 @@ In the $REF_ARCH_HOME/serviceTier directory are various services that when deplo
 Upload and enable these services to your remote JBoss environment via following procedure:
 
 . Navigate your browser to the JBoss EAP Management console
-. Click: Runtime -> Manage Deployments
+. Click: Runtime -> Manage Deployments -> Add
+. In the _Create Deployment_ pop-up, click _Choose File_ and navigate to $REF_ARCH_HOME/serviceTier/target/bizservices.war
+. Once uploaded, highlight the new web artifact and click the _En/Disable_ button
+
+image::images/add_service.png[]
 
 
+[start=5]
+. Upon doing so, the jboss server.log file will log the deployment of the various services similar to the following:
+
+----------
+JBAS018210: Register web context: /bizservices
+JBAS018559: Deployed "bizservices.war" (runtime-name : "bizservices.war")
+
+----------
 == Performance Testing
 
 == To-Do
