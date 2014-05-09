@@ -1,0 +1,8 @@
+
+<form id="9812640">
+<property name="subject" value=""/>
+<property name="name" value="processTier.soap_servicetask-taskform.form"/>
+<property name="displayMode" value="default"/>
+<property name="status" value="0"/>
+<dataHolder supportedType="className" inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_domain.domain.Policy" id="policy"/>
+</form>

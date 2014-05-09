@@ -210,7 +210,7 @@
 </style>
 <div id="container">
 	<div id="header">
-		New Process Instance: /processTier/src/main/resources/com/redhat/gpe/refarch/bpm_domain/processtier.rest_servicetask
+		New Process Instance: /processTier/src/main/resources/com/redhat/gpe/refarch/bpm_domain/processtier.soap_servicetask
 	</div>
 	<div id="content">
 	    <input type="hidden" name="processId" value="${process.id}"/>

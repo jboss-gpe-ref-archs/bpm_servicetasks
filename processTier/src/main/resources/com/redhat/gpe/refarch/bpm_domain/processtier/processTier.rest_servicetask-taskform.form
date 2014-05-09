@@ -4,5 +4,5 @@
 <property name="name" value="processTier.rest_servicetask-taskform.form"/>
 <property name="displayMode" value="default"/>
 <property name="status" value="0"/>
-<dataHolder supportedType="className" inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_domain.domain.Policy" id="policy"/>
+<dataHolder inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_domain.domain.Policy" id="policy"/>
 </form>
