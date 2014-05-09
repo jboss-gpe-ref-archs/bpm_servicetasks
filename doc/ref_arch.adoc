@@ -84,11 +84,18 @@ image::images/uploaded_domain.png[]
 . navigate to:  Authoring -> Project Authoring -> Tools -> Project Editor -> Dependencies:  Dependencies list.
 . click:  _Add from repository_ followed by _Select_ on the newly uploaded _domain-1.0.jar_ library.
 . click _Save_ .
+. Notice that upon saving the _processTier_ project, the previous class related problems are now resolved.
 
 image::images/add_domain_dep.png[]
 
+[start=9]
+. Build and Deploy the _processTier_ project by executing the following:
+.. Authoring -> Project Authoring -> Tools -> Project Editor -> Build and Deploy
+. If interested, verify deployment:
+.. Deploy -> Deployments
 
-Notice that upon saving the _processTier_ project, the previous class related problems are now resolved.
+image::images/deployment.png[]
+
 
 === BPM Suite 6:  Upload and Enable Services
 In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via various standard transports:  REST, SOAP and JMS.
@@ -110,6 +117,12 @@ JBAS018210: Register web context: /bizservices
 JBAS018559: Deployed "bizservices.war" (runtime-name : "bizservices.war")
 
 ----------
+
+== Manual Testing
+
+=== BPMN2 Service Task
+
+
 == Performance Testing
 
 == To-Do
