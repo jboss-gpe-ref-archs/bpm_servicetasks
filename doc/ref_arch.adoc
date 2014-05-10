@@ -1,6 +1,7 @@
 :data-uri:
 :toc2:
 :rhtlink: link:https://www.redhat.com[Red Hat]
+:bpmproduct: link:https://access.redhat.com/site/documentation/en-US/Red_Hat_JBoss_BPM_Suite/[Red Hat's BPM Suite 6 product]
 
 image::images/rhheader.png[width=900]
 
@@ -36,7 +37,7 @@ The following is a list of pre-requisites:
 . familiarity with {bpmproduct}
 . proficiency with the _bash_ shell 
 
-== Configuration and Deployment:  Local Environment
+== Config and Deployment:  Local Environment
 
 === local:  Clone this reference architecture
 This reference architecture will be cloned both in your local computer as well as in your remote BPM Suite 6 Openshift environment.
@@ -64,7 +65,8 @@ The _processTier_ project includes several BPMN2 process definitions that show-c
 
 Use the following steps to clone this reference architecture in BPM Suite 6:
 
-. Log into the Business-Central web application of BPM Suite 6 and navigate to:  Authoring -> Administration.
+. Log into the Business-Central web application of BPM Suite 6
+. navigate to:  Authoring -> Administration.
 . Select `Organizational Units` -> `Manage Organizational Units`
 . Under `Organizational Unit Manager`, select the `Add` button
 . Enter a name of _gpe_ and an owner of _jboss_. Click `OK`
@@ -83,7 +85,7 @@ https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
 
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
 
-=== BPM Suite 6:  Add domain-model jar to classpath of _processTier_ project
+=== BPM Suite 6:  Add domain jar to classpath of _processTier_
 The _processTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
 One approach toward making this domain model available to the _processTier_ KIE project is to manually upload libraries to the BPM Suite 6  _Artifact Repository_ and then define dependencies in the KIE project to those newly  uploaded libraries.
 
@@ -111,9 +113,10 @@ image::images/add_domain_dep.png[]
 image::images/deployment.png[]
 
 
-=== BPM Suite 6:  Upload and Enable Services
+=== BPM Suite 6:  Upload and Enable SOA Services
 In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via standard transports:  REST, SOAP and JMS.
 These services are implemented utilizing stock JEE functionality provided by the underlying JBoss Enterprise Application Platform.
+In this reference architecture, these SOA services are invoked by the corresponding BPM _Service Tasks_ used in the process definitions included in the _processTier_ KIE project.
 Upload and enable these services to your remote JBoss EAP environment via following procedure:
 
 . Navigate your browser to the JBoss EAP Management console
@@ -173,7 +176,7 @@ The content of the HTTP request was the JSON representation of a Policy object.
 === RESULTS:  soap_servicetask
 Upon starting an instance of soap_servicetask, the following should appear in the server.log:
 
-TO_DO:  currently experiencing problems with CXF Dynamic Dispatch
+TO_DO:  currently experiencing problems with different classloaders from KIE project and CXF Dynamic Dispatch 
 
 == To-Do
 . resolve this problem
