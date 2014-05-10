@@ -50,11 +50,27 @@
 		var myInputs = new Array();
 					myInputs[i] = document.getElementById("processResults");
 					i++;
+					myInputs[i] = document.getElementById("wsdlUrl");
+					i++;
+					myInputs[i] = document.getElementById("useWS");
+					i++;
 
 
 		var j=0;
 						if(notEmpty(myInputs[j]) && !isAlphanumeric(myInputs[j])) {
 							alert("Please enter valid processResults");
+							myInputs[j].focus();
+							return false;
+						}
+					j++;
+						if(notEmpty(myInputs[j]) && !isAlphanumeric(myInputs[j])) {
+							alert("Please enter valid wsdlUrl");
+							myInputs[j].focus();
+							return false;
+						}
+					j++;
+						if(notEmpty(myInputs[j]) && !isAlphanumeric(myInputs[j])) {
+							alert("Please enter valid useWS");
 							myInputs[j].focus();
 							return false;
 						}
@@ -219,6 +235,16 @@
                             		<label for="name">processResults</label>
                             		<div class="div_texbox">
                               		<input name="processResults" type="text" class="textbox" id="processResults" value="" />
+                            		</div>
+              	
+                            		<label for="name">wsdlUrl</label>
+                            		<div class="div_texbox">
+                              		<input name="wsdlUrl" type="text" class="textbox" id="wsdlUrl" value="" />
+                            		</div>
+              	
+                            		<label for="name">useWS</label>
+                            		<div class="div_checkbox">
+                              		<input name="useWS" type="checkbox" class="checkbox" id="useWS" value="true" />
                             		</div>
               	
 
