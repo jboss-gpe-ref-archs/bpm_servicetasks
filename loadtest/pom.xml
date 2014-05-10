@@ -10,9 +10,42 @@
   <properties>
     <version.jmeter>2.10</version.jmeter>
     <version.log4j>1.2.17</version.log4j>
+    <version.cxf>2.6.8</version.cxf>
+    <version.wsdl4j>1.6.3</version.wsdl4j>
+
+    <!-- ******** CHANGE ME *********** -->
+    <interface_reference>AuditReview</interface_reference>
+    <operation_reference>addPolicy</operation_reference>
+    <wsdl_location>http://192.168.5.5:8080/bizservices/AuditReview?wsdl</wsdl_location>
+    <!-- ensure the following matches the value of 'targetNamespace' in Jax-WS service -->
+    <namespace>urn:com.redhat.gpe.auditReview:1.0</namespace>
+
   </properties>
 
   <dependencies>
+    <!-- JaxWS dependencies -->
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <version>${version.cxf}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-databinding-jaxb</artifactId>
+      <version>${version.cxf}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <scope>runtime</scope>
+      <version>${version.cxf}</version>
+    </dependency>
+    <dependency>
+      <groupId>wsdl4j</groupId>
+      <artifactId>wsdl4j</artifactId>
+      <scope>runtime</scope>
+      <version>${version.wsdl4j}</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.jmeter</groupId>
       <artifactId>ApacheJMeter_java</artifactId>
@@ -32,6 +65,19 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.16</version>
+        <configuration>
+          <systemPropertyVariables>
+            <interface_reference>${interface_reference}</interface_reference>
+            <operation_reference>${operation_reference}</operation_reference>
+            <wsdl_location>${wsdl_location}</wsdl_location>
+            <namespace>${namespace}</namespace>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>

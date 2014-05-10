@@ -22,4 +22,8 @@ public class AuditReview implements IAuditReview {
         else
             return true;
     }
+
+    public void sanityCheck() {
+        log.info("sanityCheck() good to go");
+    }
 }

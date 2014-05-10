@@ -6,4 +6,6 @@ public interface IAuditReview {
 
     // implementation returns boolean indicating either approval or rejection of policy
     boolean addPolicy(Policy policyObj);
+
+    void sanityCheck();
 }

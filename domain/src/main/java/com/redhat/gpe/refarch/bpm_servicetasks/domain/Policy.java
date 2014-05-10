@@ -43,9 +43,9 @@ public class Policy implements java.io.Serializable {
 
     protected Driver driver;
     protected String policyType;
-    protected Integer price;
-    protected Integer priceDiscount;
-    protected Integer vehicleYear;
+    protected Integer price = 0;
+    protected Integer priceDiscount = 0;
+    protected Integer vehicleYear = 0;
 
     public Policy() {}
 
