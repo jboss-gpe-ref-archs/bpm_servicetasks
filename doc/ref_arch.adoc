@@ -12,13 +12,17 @@ image::images/rhheader.png[width=900]
 
 == Overview
 
-=== BPMN2 ServiceTask 
+=== SOAP Service Tasks
 
-image::images/bpmnservicetask.png[]
+image::images/soapservicetasks.png[]
 
-=== REST ServiceTask 
+to-do:  elaborate on details
 
-image::images/bpmnservicetask.png[]
+=== REST Service Task 
+
+image::images/restservicetask.png[]
+
+to-do: elaborate on details
 
 === JMS ServiceTask 
 to-do
@@ -170,9 +174,6 @@ The content of the HTTP request was the JSON representation of a Policy object.
 Upon starting an instance of soap_servicetask, the following should appear in the server.log:
 
 TO_DO:  currently experiencing problems with CXF Dynamic Dispatch
-
-
-== Performance Testing
 
 == To-Do
 . resolve this problem

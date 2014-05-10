@@ -3,15 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
-  <artifactId>loadtest</artifactId>
+  <artifactId>client</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
 
   <properties>
-    <version.jmeter>2.10</version.jmeter>
-    <version.log4j>1.2.17</version.log4j>
-    <version.cxf>2.6.8</version.cxf>
-    <version.wsdl4j>1.6.3</version.wsdl4j>
 
     <!-- ******** CHANGE ME *********** -->
     <interface_reference>AuditReview</interface_reference>
@@ -20,6 +16,9 @@
     <!-- ensure the following matches the value of 'targetNamespace' in Jax-WS service -->
     <namespace>urn:com.redhat.gpe.auditReview:1.0</namespace>
 
+    <version.log4j>1.2.17</version.log4j>
+    <version.cxf>2.6.8</version.cxf>
+    <version.wsdl4j>1.6.3</version.wsdl4j>
   </properties>
 
   <dependencies>
@@ -45,11 +44,6 @@
       <artifactId>wsdl4j</artifactId>
       <scope>runtime</scope>
       <version>${version.wsdl4j}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.jmeter</groupId>
-      <artifactId>ApacheJMeter_java</artifactId>
-      <version>${version.jmeter}</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
@@ -106,44 +100,6 @@
         </executions>
       </plugin>
 
-      <!-- jmeter load-test;  usage: mvn clean verify -->
-      <plugin>
-            <groupId>com.lazerycode.jmeter</groupId>
-            <artifactId>jmeter-maven-plugin</artifactId>
-            <version>1.9.0</version>
-            <executions>
-                <execution>
-                    <id>jmeter-tests</id>
-                    <phase>verify</phase>
-                    <goals>
-                        <goal>jmeter</goal>
-                    </goals>
-                    <configuration>
-                        <propertiesJMeter>
-                            <!-- provide jmeter maven plugin with path to compiled java test class -->
-                            <search_paths>${basedir}/target</search_paths>
-                        </propertiesJMeter>
-                    </configuration>
-                </execution>
-            </executions>
-            <configuration>
-                <propertiesSystem>
-                    <path.to.log4j.xml>${basedir}/src/test/resources/log4j.xml</path.to.log4j.xml>
-                </propertiesSystem>
-            </configuration>
-            <dependencies>
-                <dependency>
-                    <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
-                    <artifactId>domain</artifactId>
-                    <version>1.0</version>
-                </dependency>
-                <dependency>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                    <version>${version.log4j}</version>
-                </dependency>
-            </dependencies>
-        </plugin>
     </plugins>
   </build>
 </project>
