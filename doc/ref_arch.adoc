@@ -83,26 +83,25 @@ https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
 
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
 
-=== BPM Suite 6:  Add domain-model jar to classpath of _processTier_ project
+=== BPM Suite 6:  Add domain-model jar to classpath of business-central
 The _processTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
 One approach toward making this domain model available to the _processTier_ KIE project is to manually upload libraries to the BPM Suite 6  _Artifact Repository_ and then define dependencies in the KIE project to those newly  uploaded libraries.
+As of BPM Suite 6.0.2, this approach however causes classloader inconsistencies when invoking SOAP services with complex types.
+When using the SOAP based WorkItemHandlers, it is not sufficient to make the domain model jar visible to the KIE project only.
+Instead, the domain model jar needs to be made visible on the classpath of the BPM Suite business-central web artifact.
+Since this reference architecture does show-case use of invoking a remote SOAP service that requires a complex-type in its payload, the domain model jar will be made visible to the business-central web archive. 
+JBoss EAP 6 allows for two different options for adding the libraries to the classpath of a web artifact (in this case:  business-central.war)
+. Deploy the domain model jar as a static shared JBoss module and enter in an explicit dependency on this new JBoss module in business-central.war/WEB-INF/jboss-deployment-structure.xml
+. Add the domain model jar to: business-central.war/WEB-INF/lib
 
-. In your browser, navigate to :   Authoring -> Project Authoring .  Several exceptions related to the inability to find domain model classes should appear in the _Problems_ window.  This is to be expected at this time.
-. navigate to :  Authoring -> Artifact Repository -> Upload
-. In the _Artifact upload_ pop-up, select _Choose File_ and navigate to $REF_ARCH_HOME/domain/target/domain-1.0.jar in your local environment.
-. Click Upload
+For the purpose of this reference architecture, the latter approach will be used.
+In your remote BPM Suite 6 enabled OpenShift environment, execute a command similar to the following:
 
-image::images/uploaded_domain.png[]
+------
+scp $REF_ARCH_HOME/domain/target/domain-1.0.jar  <ssh_url_to_your_remote_gear>:~/bpms/standalone/deployments/business-central.war/WEB-INF/lib
+------
 
-[start=5]
-. navigate to:  Authoring -> Project Authoring -> Tools -> Project Editor -> Dependencies:  Dependencies list.
-. click:  _Add from repository_ followed by _Select_ on the newly uploaded _domain-1.0.jar_ library.
-. click _Save_ .
-. Notice that upon saving the _processTier_ project, the previous class related problems are now resolved.
-
-image::images/add_domain_dep.png[]
-
-[start=9]
+=== BPM Suite 6:  Build and Deploy _processTier_ project
 . Build and Deploy the _processTier_ project by executing the following:
 .. Authoring -> Project Authoring -> Tools -> Project Editor -> Build and Deploy
 . If interested, verify deployment:
@@ -173,9 +172,12 @@ The content of the HTTP request was the JSON representation of a Policy object.
 === RESULTS:  soap_servicetask
 Upon starting an instance of soap_servicetask, the following should appear in the server.log:
 
-TO_DO:  currently experiencing problems with CXF Dynamic Dispatch
-
 == To-Do
-. resolve this problem
-. resolve that problem
+* classpath problems with CXF Dynamic Dispatch
+** https://mojo.redhat.com/docs/DOC-942546
+* RESTWorkItemHandler:  Exception Handling
+** https://bugzilla.redhat.com/show_bug.cgi?id=1098137
+* RESTWorkItemHandler:  automated (un)marshalling
+** https://bugzilla.redhat.com/show_bug.cgi?id=1098140
+
 =======
