@@ -91,9 +91,9 @@ The _processTier_ KIE project references a domain model that is included in the 
 One approach toward making this domain model available to the _processTier_ KIE project is to manually upload libraries to the BPM Suite 6  _Artifact Repository_ and then define dependencies in the KIE project to those newly  uploaded libraries.
 As of BPM Suite 6.0.2, this approach however causes classloader inconsistencies when invoking SOAP services with complex types.
 When using the SOAP based WorkItemHandlers, it is not sufficient to make the domain model jar visible to the KIE project only.
-Instead, the domain model jar needs to be made visible on the classpath of the BPM Suite business-central web artifact.
+Instead, the domain model jar needs to be made visible to the entire classpath of the BPM Suite business-central web artifact.
 
-Since this reference architecture does show-case use of invoking a remote SOAP service that requires a complex-type in its payload, the domain model jar will be made visible to the business-central web archive. 
+Since this reference architecture does show-case use of invoking a remote SOAP service that requires a complex-type in its payload, the domain model jar will be made visible to the classpath of the business-central web archive. 
 JBoss EAP 6 allows for two different options for adding the libraries to the classpath of a web artifact (in this case:  business-central.war):
 
 . Deploy the domain model jar as a static shared JBoss module and enter in an explicit dependency on this new JBoss module in business-central.war/WEB-INF/jboss-deployment-structure.xml
