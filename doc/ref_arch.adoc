@@ -117,22 +117,21 @@ image::images/deployment.png[]
 === BPM Suite 6:  Discussion regarding domain models
 In this reference architecture, a single java library with domain model classes is shared between the _processTier_ and the _servicesTier_.
 The source code and build configuration for these domain model classes reside in $REF_ARCH_HOME/domain.
-Previously we've discussed the requirement to add this domain model library to the business-central.war/WEB-INF/lib directory.
+The previous section discussed the requirement to add this external domain model library to the business-central.war/WEB-INF/lib directory.
 
-BPM Suite 6 includes a _Data Modeler_ tool.
-The Data Modeler tool allows for the creation of domain model classes.
-Classes created through the BPM Suite 6 Data Modeler should be considered a _processTier_ domain model only.
-Specifically, this _processTier_ domain model is useful at design-time to facilate creation of rules, BPMN2 process definitions, forms, etc.
-It is also useful at runtime to facilitate the execution of rules and process instances included in a KIE project.
-In summary, the scope of this _processTier_ domain model is specific to KIE workbench tooling and KIE project execution.
+As an alternative, BPM Suite 6 includes a _Data Modeler_ tool.
+The Data Modeler tool allows for the creation of domain model classes to be used for your BPM Suite 6 KIE projects.
+Specifically, these Data Modeler generated domain-model classes are useful at design-time to facilate creation of rules, BPMN2 process definitions, forms, etc.
+These domain-model classes also useful at runtime to facilitate the execution of rules and process instances included in a KIE project.
+In summary, the scope of a Data Modeler generated _processTier_ domain model is specific to KIE workbench tooling and KIE project execution.
 
 This _processTier_ domain model should generally not be used outside the scope of the KIE workbench nor KIE project execution.
-When integration between a process instance and SOA services are needed, it is a best practice to define an additional _integration_ domain model.
+When integration between a process instance and SOA services is needed, it is a best practice to define an additional _integration_ domain model.
 Transformations between _integration_ and _processTier_ domain models are common:
 
-. inbound through BPM Suite 6 Execution Server: 
+. *inbound through BPM Suite 6 Execution Server:* 
 A BPMN2 process definition should conduct as its first node the following transformation:  _integrationDomain_ -> _processTierDomain_ 
-. outbound through Service Tasks:
+. *outbound through Service Tasks:*
 A BPMN2 process definition should conduct the following transformtion just prior to a service task node:  _processTierDomain_ -> _integrationDomain_ 
 
 === BPM Suite 6:  Upload and Enable SOA Services
