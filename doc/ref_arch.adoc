@@ -106,14 +106,6 @@ In your remote BPM Suite 6 enabled OpenShift environment, execute a command simi
 scp $REF_ARCH_HOME/domain/target/domain-1.0.jar  <ssh_url_to_your_remote_gear>:~/bpms/standalone/deployments/business-central.war/WEB-INF/lib
 ------
 
-=== BPM Suite 6:  Build and Deploy _processTier_ project
-. Build and Deploy the _processTier_ project by executing the following:
-.. Authoring -> Project Authoring -> Tools -> Project Editor -> Build and Deploy
-. If interested, verify deployment:
-.. Deploy -> Deployments
-
-image::images/deployment.png[]
-
 === BPM Suite 6:  Discussion regarding domain models
 In this reference architecture, a single java library with domain model classes is shared between the _processTier_ and the _servicesTier_.
 The source code and build configuration for these domain model classes reside in $REF_ARCH_HOME/domain.
@@ -133,6 +125,14 @@ Transformations between _integration_ and _processTier_ domain models are common
 A BPMN2 process definition should conduct as its first node the following transformation:  _integrationDomain_ -> _processTierDomain_ 
 . *outbound through Service Tasks:*
 A BPMN2 process definition should conduct the following transformtion just prior to a service task node:  _processTierDomain_ -> _integrationDomain_ 
+
+=== BPM Suite 6:  Build and Deploy _processTier_ project
+. Build and Deploy the _processTier_ project by executing the following:
+.. Authoring -> Project Authoring -> Tools -> Project Editor -> Build and Deploy
+. If interested, verify deployment:
+.. Deploy -> Deployments
+
+image::images/deployment.png[]
 
 === BPM Suite 6:  Upload and Enable SOA Services
 In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via standard transports:  REST, SOAP and JMS.
