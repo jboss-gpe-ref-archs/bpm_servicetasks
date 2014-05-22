@@ -59,31 +59,6 @@ To build the various sub-projects, execute the following:
 
 == Configuration and Deployment:  BPM Suite 6
 
-=== BPM Suite 6:  Clone this reference architecture
-This reference architecture includes a KIE project called: _processTier_ .
-The _processTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
-
-Use the following steps to clone this reference architecture in BPM Suite 6:
-
-. Log into the Business-Central web application of BPM Suite 6
-. navigate to:  Authoring -> Administration.
-. Select `Organizational Units` -> `Manage Organizational Units`
-. Under `Organizational Unit Manager`, select the `Add` button
-. Enter a name of _gpe_ and an owner of _jboss_. Click `OK`
-. Clone this fsw_bpms_integration repository in BPM Suite 6
-.. Select `Repositories` -> `Clone Repository` .  
-.. Populate the _Clone Repository_ box as follows and then click _Clone_ :
-
-image::images/clone_repo.png[]
-
-Enter _bpmservicetask_ as the value of the _repository name_.  
-The value of _Git URL_ is the URL to this reference architecture in github:
-
------
-https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
------
-
-Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
 
 === BPM Suite 6:  Add domain-model jar to classpath of business-central
 The _processTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
@@ -125,6 +100,32 @@ Transformations between _integration_ and _processTier_ domain models are common
 A BPMN2 process definition should conduct as its first node the following transformation:  _integrationDomain_ -> _processTierDomain_ 
 . *outbound through Service Tasks:*
 A BPMN2 process definition should conduct the following transformtion just prior to a service task node:  _processTierDomain_ -> _integrationDomain_ 
+
+=== BPM Suite 6:  Clone this reference architecture
+This reference architecture includes a KIE project called: _processTier_ .
+The _processTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
+
+Use the following steps to clone this reference architecture in BPM Suite 6:
+
+. Log into the Business-Central web application of BPM Suite 6
+. navigate to:  Authoring -> Administration.
+. Select `Organizational Units` -> `Manage Organizational Units`
+. Under `Organizational Unit Manager`, select the `Add` button
+. Enter a name of _gpe_ and an owner of _jboss_. Click `OK`
+. Clone this fsw_bpms_integration repository in BPM Suite 6
+.. Select `Repositories` -> `Clone Repository` .  
+.. Populate the _Clone Repository_ box as follows and then click _Clone_ :
+
+image::images/clone_repo.png[]
+
+Enter _bpmservicetask_ as the value of the _repository name_.  
+The value of _Git URL_ is the URL to this reference architecture in github:
+
+-----
+https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
+-----
+
+Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
 
 === BPM Suite 6:  Build and Deploy _processTier_ project
 . Build and Deploy the _processTier_ project by executing the following:
