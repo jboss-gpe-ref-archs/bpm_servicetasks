@@ -24,8 +24,9 @@ public class AuditReview implements IAuditReview {
     }
 
     public Policy modifyPolicy(Policy policyObj) {
-        log.info("addPolicy() policy = "+policyObj);
-        return policyObj.setPrice(1000);
+        policyObj.setPrice(1000);
+        log.info("addPolicy() modified price to 800;  policy = "+policyObj);
+        return policyObj;
     }
 
     public void sanityCheck() {
