@@ -23,6 +23,11 @@ public class AuditReview implements IAuditReview {
             return true;
     }
 
+    public Policy modifyPolicy(Policy policyObj) {
+        log.info("addPolicy() policy = "+policyObj);
+        return policyObj.setPrice(1000);
+    }
+
     public void sanityCheck() {
         log.info("sanityCheck() good to go");
     }
