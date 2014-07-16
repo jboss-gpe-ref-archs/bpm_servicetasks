@@ -1,4 +1,4 @@
-package com.redhat.gpe.refarch.bpm_servicetasks.processTier;
+package com.redhat.gpe.refarch.bpm_servicetasks.processtier;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
