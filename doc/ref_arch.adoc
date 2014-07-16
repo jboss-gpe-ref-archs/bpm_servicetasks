@@ -28,6 +28,18 @@ to-do: elaborate on details
 === JMS ServiceTask 
 to-do
 
+=== EJB ServiceTask
+to-do
+
+=== Spring ServiceTask
+
+image::images/springservicetask.png[]
+
+Purpose of this example is to demonstrate use of a custom workItemHandler that leverages the Spring framework to persist a record in a database.
+This approach should be avoided if possible.
+Instead, it is preferrable that business functions that leverages third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task.
+In some edge cases however, SOA may not be an option and thus this business functionality needs to run in the same thread of execution as the BPM process engine.
+
 == Pre-Requisites
 The remainder of this documentation provides instructions for installation, configuration and execution of this reference architecture. 
 The following is a list of pre-requisites:
@@ -35,9 +47,11 @@ The following is a list of pre-requisites:
 . maven 3.0.5 (or greater)
 . git client
 . familiarity with {bpmproduct}
-. proficiency with the _bash_ shell 
+. proficiency with utilities provided by the _bash_ shell 
 
 == Config and Deployment:  Local Environment
+If your interest is in the _spring_ServiceTask_ example, please follow the instructions found link:spring_serviceTask_instructions.adoc[here].
+Otherwise, for all other examples in this reference architecture, follow the next series of instructions.
 
 === local:  Clone this reference architecture
 This reference architecture will be cloned both in your local computer as well as in your remote BPM Suite 6 Openshift environment.
