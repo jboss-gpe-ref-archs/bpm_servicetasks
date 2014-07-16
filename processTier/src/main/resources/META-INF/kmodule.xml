@@ -2,7 +2,7 @@
   <kbase name="bpmdomainkbase" default="true" eventProcessingMode="cloud" equalsBehavior="equality" packages="*">
     <ksession name="bpmdomainksession" type="stateful" default="true" clockType="realtime" scope="javax.enterprise.context.ApplicationScoped">
       <workItemHandlers>
-        <workItemHandler type="new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession)" name="Service Task"/>
+        <!-- workItemHandler type="new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession)" name="Service Task"/ -->
         <workItemHandler type="new com.redhat.gpe.refarch.bpm_servicetasks.processtier.SpringPersistenceWIH(ksession)" name="SpringServiceTask"/>
       </workItemHandlers>
     </ksession>
