@@ -34,6 +34,7 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
             // notify manager that work item has been completed
             manager.completeWorkItem(workItem.getId(), null);
         }catch(Throwable x) {
+            x.printStackTrace();
             handleException(x);
         }
     }
