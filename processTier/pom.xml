@@ -8,11 +8,6 @@
   <packaging>kjar</packaging>
   <name>processTier</name>
   <dependencies>
-    <!--dependency>
-      <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
-      <artifactId>domain</artifactId>
-      <version>1.0</version>
-    </dependency -->
   </dependencies>
   <repositories>
     <repository>
@@ -26,7 +21,7 @@
       <plugin>
         <groupId>org.kie</groupId>
         <artifactId>kie-maven-plugin</artifactId>
-        <version>6.0.3-redhat-1</version>
+        <version>6.0.3-redhat-4</version>
         <extensions>true</extensions>
       </plugin>
     </plugins>

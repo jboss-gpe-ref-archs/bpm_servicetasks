@@ -1,0 +1,26 @@
+<component xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/component/1.1.2 http://maven.apache.org/xsd/component-1.1.2.xsd">
+
+    <files>
+        <file>
+            <source>src/main/resources/spring/module.xml</source>
+            <outputDirectory>/modules/system/layers/gpe/org/spring/main</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+    </files>
+
+    <dependencySets>
+        <dependencySet>
+            <useTransitiveDependencies>false</useTransitiveDependencies>
+            <includes>
+                <include>org.springframework:spring-context</include>
+                <include>org.springframework:spring-jdbc</include>
+                <include>org.springframework:spring-beans</include>
+                <include>org.springframework:spring-tx</include>
+                <include>org.springframework:spring-core</include>
+            </includes>
+            <outputDirectory>/modules/system/layers/gpe/org/spring/main</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}-${spring.version}.${artifact.extension}</outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+</component>

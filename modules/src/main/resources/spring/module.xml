@@ -1,0 +1,15 @@
+<module xmlns="urn:jboss:module:1.1" name="org.spring">
+
+    <resources>
+        <resource-root path="spring-context-${spring.version}.jar"/>
+        <resource-root path="spring-jdbc-${spring.version}.jar"/>
+        <resource-root path="spring-beans-${spring.version}.jar"/>
+        <resource-root path="spring-tx-${spring.version}.jar"/>
+        <resource-root path="spring-core-${spring.version}.jar"/>
+    </resources>
+
+    <dependencies>
+        <module name="org.apache.commons.logging" />
+        <module name="javax.api" />
+    </dependencies>
+</module>
