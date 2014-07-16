@@ -8,11 +8,11 @@
   <packaging>kjar</packaging>
   <name>processTier</name>
   <dependencies>
-    <!--dependency>
+    <dependency>
       <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
       <artifactId>domain</artifactId>
       <version>1.0</version>
-    </dependency -->
+    </dependency>
   </dependencies>
   <repositories>
     <repository>
