@@ -35,9 +35,9 @@ to-do
 
 image::images/springservicetask.png[]
 
-Purpose of this example is to demonstrate use of a custom workItemHandler that leverages the Spring framework to persist a record in a database.
+Purpose of this example is to demonstrate use of a custom workItemHandler that uses the Spring framework to persist a record in a database.
 This approach should be avoided if possible.
-Instead, it is preferrable that business functions that leverages third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task.
+Instead, it is preferrable that business functions that leverage third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task.
 In some edge cases however, SOA may not be an option and thus this business functionality needs to run in the same thread of execution as the BPM process engine.
 
 == Pre-Requisites

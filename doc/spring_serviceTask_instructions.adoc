@@ -1,0 +1,33 @@
+= BPM Service Tasks: spring_serviceTask
+
+:numbered:
+
+== Overview
+
+image::images/springservicetask.png[]
+
+Purpose of this example is to demonstrate use of a custom workItemHandler that leverages the Spring framework to persist a record in a database. 
+This approach should be avoided if possible. 
+Instead, it is preferrable that business functions that leverages third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task. 
+In some edge cases however, SOA may not be an option and thus this business functionality needs to run in the same thread of execution as the BPM process engine.
+
+== Config and Deployment:  Local Environment
+
+=== local:  Clone this reference architecture
+
+This reference architecture will be cloned both in your local computer as well as in your remote BPM Suite 6 Openshift environment.
+To clone this reference architecture in your local environment, execute the following:
+
+--------
+git clone https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
+--------
+
+Doing so will create a directory in your local computer called:  bpm_servicetasks.
+For the purposes of this documentation, this directory will be referred to as $REF_ARCH_HOME.
+
+=== local: Build the Reference Architecture
+This reference architecture includes various sub-projects that need to be built locally.
+To build the various sub-projects, execute the following:
+
+. cd $REF_ARCH_HOME
+. mvn clean install -DskipTests
