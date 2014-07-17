@@ -211,5 +211,5 @@ test=# select * from customer;
 (1 row)
 -----
 
-You now have configured a custom workItemHandler that leverages the Spring framework to persist to an application database.
+You now have configured and tested a custom workItemHandler that leverages the Spring framework to persist to an application database.
 
