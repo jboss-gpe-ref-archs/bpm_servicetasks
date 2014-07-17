@@ -109,7 +109,36 @@ max_prepared_transactions = 10
 -----
 test=# create table customer(id int8 not null, firstname varchar(255), lastname varchar(255), primary key (id));
 test=# grant all privileges on table customer to test;
- -----
+-----
+
+=== BPM Suite 6: Add XA datasource to JBoss EAP 6
+The Spring custom work item handler executes a JNDI lookup for a datasource pool called:  _test-cp-xa_.
+Subsequently, a new datasource with this name should be configured in JBoss EAP.
+The following example is postgresql specific.
+Modify as needed for your application database.
+
+-----
+                <xa-datasource jndi-name="java:jboss/datasources/test-cp-xa" pool-name="test-cp-xa" enabled="true">
+                    <xa-datasource-property name="ServerName">
+                        172.9.4.3
+                    </xa-datasource-property>
+                    <xa-datasource-property name="DatabaseName">
+                        test
+                    </xa-datasource-property>
+                    <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+                    <driver>postgresql</driver>
+                    <new-connection-sql>select 1;</new-connection-sql>
+                    <xa-pool>
+                        <min-pool-size>1</min-pool-size>
+                        <max-pool-size>5</max-pool-size>
+                    </xa-pool>
+                    <security>
+                        <user-name>test</user-name>
+                        <password>test</password>
+                    </security>
+                </xa-datasource>
+
+-----
  
 === BPM Suite 6: Clone this reference architecture
 This reference architecture includes a KIE project called: _processTier_ .
