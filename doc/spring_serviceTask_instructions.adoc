@@ -26,8 +26,117 @@ Doing so will create a directory in your local computer called:  bpm_servicetask
 For the purposes of this documentation, this directory will be referred to as $REF_ARCH_HOME.
 
 === local: Build the Reference Architecture
-This reference architecture includes various sub-projects that need to be built locally.
+This reference architecture includes a _modules_ sub-project that needs to be built locally.
 To build the various sub-projects, execute the following:
 
-. cd $REF_ARCH_HOME
+. cd $REF_ARCH_HOME/modules
 . mvn clean install -DskipTests
+
++
+The end-result is a zip file that contains all the needed Spring framework libraries packaged as a JBoss Module in a new _gpe_ directory:
+
++
+-----
+$ jar -tf $REF_ARCH_HOME/modules/target/persistence.service.modules.zip
+modules/
+modules/README.txt
+modules/system/
+modules/system/layers/
+modules/system/layers/gpe/
+modules/system/layers/gpe/org/
+modules/system/layers/gpe/org/spring/
+modules/system/layers/gpe/org/spring/main/
+modules/system/layers/gpe/org/spring/main/module.xml
+modules/system/layers/gpe/org/spring/main/spring-context-3.2.3.RELEASE.jar
+modules/system/layers/gpe/org/spring/main/spring-jdbc-3.2.3.RELEASE.jar
+modules/system/layers/gpe/org/spring/main/spring-beans-3.2.3.RELEASE.jar
+modules/system/layers/gpe/org/spring/main/spring-tx-3.2.3.RELEASE.jar
+modules/system/layers/gpe/org/spring/main/spring-core-3.2.3.RELEASE.jar
+-----
+
++
+These Spring framework libraries are going to be added to the java classpath of your remote BPM Suite 6 runtime.
+
+. Secure copy this zip library to your remote BPM Suite 6 environment:
+
+-----
+scp $REF_ARCH_HOME/modules/target/persistence.service.modules.zip <ssh.url.to.your.bpm.environment>:/tmp
+-----
+
+=== BPM Suite 6: Register Spring framework JBoss module as explicit dependency
+
+. ssh to your remote BPM Suite 6 environment
+. cd $JBOSS_HOME
+. unzip /tmp/persistence.service.modules.zip
+. edit $JBOSS_HOME/modules/layers.conf and append the name _gpe_ to the list of _layers_ :
+
+-----
+layers=bpms,gpe
+-----
+
+. edit $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/jboss-deployment-structure.xml
+.. go to the bottom of the file and add a module dependency on the new _org.spring_ JBoss Module:
+
+-----
+<module name="org.yaml.snakeyaml" export="true" services="import" meta-inf="import"/>
+
+<module name="org.spring" export="true" services="import" meta-inf="import"/>
+
+  </dependencies>
+</deployment>
+</jboss-deployment-structure>
+-----
+
+. Bounce your BPM Suite 6 java run-time.
+
+=== RDBMS: Create a new example _test_ database and _customer_ table
+
+The Spring custom work item handler included in this reference architecture, writes to a _customer_ table in a _test_ database.
+This section documents the creation of these database objects using PostgreSQL.
+Modify these instructions as appropriate for your application database
+
+. (as postgres user) :  enable prepared transactions by uncommenting the following in ~/data/postgresql.conf
+
+-----
+max_prepared_transactions = 10 
+-----
+
+. restart postgresql
+. (as postgres user) : create user test with password 'test';
+. (as postgres user) : createdb -O test test
+. (as postgres user) : psql test
+
+-----
+test=# create table customer(id int8 not null, firstname varchar(255), lastname varchar(255), primary key (id));
+test=# grant all privileges on table customer to test;
+ -----
+ 
+=== BPM Suite 6: Clone this reference architecture
+This reference architecture includes a KIE project called: _processTier_ .
+The _processTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
+
+Use the following steps to clone this reference architecture in BPM Suite 6:
+
+. Log into the Business-Central web application of BPM Suite 6
+. navigate to:  Authoring -> Administration.
+. Select `Organizational Units` -> `Manage Organizational Units`
+. Under `Organizational Unit Manager`, select the `Add` button
+. Enter a name of _gpe_ and an owner of _jboss_. Click `OK`
+. Clone this fsw_bpms_integration repository in BPM Suite 6
+.. Select `Repositories` -> `Clone Repository` .
+.. Populate the _Clone Repository_ box as follows and then click _Clone_ :
+
+image::images/clone_repo.png[]
+
+Enter _bpmservicetask_ as the value of the _repository name_.
+The value of _Git URL_ is the URL to this reference architecture in github:
+
+-----
+https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
+-----
+
+Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
+
+== BPM Suite 6:  enable the Spring custom work item handler
+
+
