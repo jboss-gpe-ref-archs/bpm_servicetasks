@@ -14,22 +14,24 @@ import org.jbpm.process.workitem.AbstractLogOrThrowWorkItemHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+
+//import org.springframework.jdbc.core.JdbcTemplate; // enable me
 
 public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     
     private static final Logger log = LoggerFactory.getLogger(SpringPersistenceWIH.class);
     private static AtomicInteger counter = new AtomicInteger();
     private static Object cpLock = new Object();
-    private static JdbcTemplate jdbcTemplate;  // JdbcTemplate is thead-safe
+
+    // JdbcTemplate is thread-safe
+    //private static JdbcTemplate jdbcTemplate; // enable me
 
     public SpringPersistenceWIH() {}
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         try {
             getJdbcTemplate();
-            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", counter.getAndIncrement(), "Azra and Alex", "Bride");
+            //jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", counter.getAndIncrement(), "Azra and Alex", "Bride"); //enable me
 
             // notify manager that work item has been completed
             manager.completeWorkItem(workItem.getId(), null);
@@ -44,6 +46,8 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     }
 
     private synchronized static void getJdbcTemplate() throws Exception {
+        //enable me
+        /*
         if(jdbcTemplate != null)
             return;
 
@@ -53,8 +57,9 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
 
             Context jContext = new InitialContext();
             DataSource testCP = (DataSource)jContext.lookup("java:jboss/datasources/test-cp-xa");
-            jdbcTemplate = new JdbcTemplate(testCP);
             log.info("start() testCP = "+testCP);
+            jdbcTemplate = new JdbcTemplate(testCP);
         }
+        */
     }
 }
