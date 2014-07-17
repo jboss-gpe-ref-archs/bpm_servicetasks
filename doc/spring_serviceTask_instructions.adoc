@@ -166,6 +166,50 @@ https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
 
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
 
-== BPM Suite 6:  enable the Spring custom work item handler
+=== local:  enable the Spring custom work item handler
+This reference architecture includes a Spring custom workItemHandler at:  $REF_ARCH_HOME/processTier/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.bk
+This is a java source file with the additional _.bk_ suffix added so as to not compile by default and interfere with other examples in this reference architecture that do not use Spring libraries.
+Execute the following in your local environment to enable this Spring custom workItemHandler:
 
+-----
+cd $REF_ARCH_HOME
+git mv processTier/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.bk  processTier/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java
+git commit -m 'enabling Spring WIH'
+git push docker_bpms master
+-----
+
+The last command from above, pushes the change in the bpm_servicetasks git project to the .niogit/bpmservicetasks bare repository used by BPM Suite 6.
+
+
+=== BPM Suite 6:  Build and Deploy _processTier_ project
+. Build and Deploy the _processTier_ project by executing the following:
+.. Authoring -> Project Authoring -> Tools -> Project Editor -> Build and Deploy
+. If interested, verify deployment:
+.. Deploy -> Deployments
+
+== Manual Testing
+This reference architecture includes a BPMN2 called: _spring_servicetask.bpmn2_.
+It can be executed manually as follows:
+
+. Navigate to:  Process Management -> Process Definitions
+. Select the _Start_ icon of any of the _spring_servicetask.bpmn2_ process definition.
+. A form should appear with only a _play_ button to start that specific process.
+. Make sure your $JBOSS_HOME/standalone/log/server.log is being tailed and click this play button.
+
+=== RESULTS:  spring_servicetask
+The _customer_ table of your application database should now include a record as follows:
+
+-----
+bash-4.2$ psql test
+psql (9.2.7)
+Type "help" for help.
+
+test=# select * from customer;
+ id |   firstname   | lastname 
+----+---------------+----------
+  0 | Azra and Alex | Bride
+(1 row)
+-----
+
+You now have configured a custom workItemHandler that leverages the Spring framework to persist to an application database.
 
