@@ -1,4 +1,4 @@
-package com.redhat.gpe.refarch.bpm_servicetasks.processtier;
+package com.redhat.gpe.refarch.bpm_servicetasks.wih;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
