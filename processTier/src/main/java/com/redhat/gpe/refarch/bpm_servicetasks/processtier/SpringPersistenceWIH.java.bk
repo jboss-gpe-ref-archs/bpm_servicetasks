@@ -27,7 +27,9 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         try {
             getJdbcTemplate();
-            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextval('customerId'), "Azra and Alex", "Bride");
+            Integer nextVal = (Integer)jdbcTemplate.queryForObject("select nextval('customerId')", Integer.class);
+            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextval, "Azra and Alex", "Bride");
+            log.info("executeWorkItem() just inserted record into customer table with id = "+nextVal);
 
             // notify manager that work item has been completed
             manager.completeWorkItem(workItem.getId(), null);
