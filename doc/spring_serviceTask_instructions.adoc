@@ -125,7 +125,9 @@ Modify these instructions as appropriate for your application database.
 
 -----
 test=# create table customer(id int8 not null, firstname varchar(255), lastname varchar(255), primary key (id));
+test=# create sequence customerId;
 test=# grant all privileges on table customer to test;
+test=# grant all privileges on sequence customerId to test;
 -----
 
 === BPM Suite 6: Add XA datasource to JBoss EAP 6
