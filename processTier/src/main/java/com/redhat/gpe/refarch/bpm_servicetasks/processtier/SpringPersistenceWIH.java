@@ -22,13 +22,20 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     // JdbcTemplate is thread-safe
     private static JdbcTemplate jdbcTemplate; // enable me
 
-    public SpringPersistenceWIH() {}
+    private KieSession sessionObj = null;
+
+    public SpringPersistenceWIH(KieSession sessionObj) {
+	this.sessionObj = sessionObj;
+    }
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         try {
             getJdbcTemplate();
             Integer nextVal = (Integer)jdbcTemplate.queryForObject("select nextval('customerId')", Integer.class);
             jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextVal, "Azra and Alex", "Bride");
+
+            WorkflowProcessInstance pInstance = (WorkflowProcessInstance)sessionObj.getProcessInstance(workItem.getProcessInstanceId());
+            log.info("executeWorkItem() just inserted record into customer table with id = "+nextVal+ " : pInstanceId = "+pInstance.getId());
 
             // notify manager that work item has been completed
             manager.completeWorkItem(workItem.getId(), null);
