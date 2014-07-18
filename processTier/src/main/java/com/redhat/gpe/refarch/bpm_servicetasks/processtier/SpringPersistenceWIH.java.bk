@@ -1,7 +1,5 @@
 package com.redhat.gpe.refarch.bpm_servicetasks.processtier;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -19,7 +17,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     
     private static final Logger log = LoggerFactory.getLogger(SpringPersistenceWIH.class);
-    private static AtomicInteger counter = new AtomicInteger();
     private static Object cpLock = new Object();
 
     // JdbcTemplate is thread-safe
@@ -30,7 +27,7 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         try {
             getJdbcTemplate();
-            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", counter.getAndIncrement(), "Azra and Alex", "Bride");
+            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextval('customerId'), "Azra and Alex", "Bride");
 
             // notify manager that work item has been completed
             manager.completeWorkItem(workItem.getId(), null);
