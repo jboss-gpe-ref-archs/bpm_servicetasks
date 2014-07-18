@@ -4,7 +4,7 @@
 
 == Overview
 
-. spring_servicetask
+.spring_servicetask
 image::images/springservicetask.png[]
 
 Purpose of this example is to demonstrate use of a custom workItemHandler that leverages the Spring framework to persist a record in an application database. 
