@@ -26,6 +26,8 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
 
     private KieSession sessionObj = null;
 
+    public SpringPersistenceWIH() {}
+
     public SpringPersistenceWIH(KieSession sessionObj) {
 	this.sessionObj = sessionObj;
     }
