@@ -78,7 +78,7 @@ The Spring libraries archived in a zip file and pushed to your BPM Suite 6 envir
 layers=bpms,gpe
 -----
 
-=== local:  deploy the Spring custom work item handler
+=== local:  deploy the Spring workItemHandler
 This reference architecture includes a Spring-based custom workItemHandler at:  $REF_ARCH_HOME/wih/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.
 Execute the following in your local environment to make this Spring custom workItemHandler available for use in BPM Suite 6:
 
@@ -89,12 +89,12 @@ scp -r conf/modules/ jboss@docker_bpms:/opt/jboss_bpm_soa/jboss-eap-6.1
 scp target/wih-1.0.jar jboss@docker_bpms:/opt/jboss_bpm_soa/jboss-eap-6.1/modules/system/layers/gpe/com/redhat/gpe/refarch/bpm_servicetasks/main/
 -----
 
-Collectively, the above commands build _wih-1.0.jar_ (which contains the SpringPersistenWIH class) and deploys it as a JBoss Module to the remote BPM Suite 6 runtime environment.
+Collectively, the above commands build an artifact called: _wih-1.0.jar_ (which contains the SpringPersistenWIH class) and deploys it as a JBoss Module to the remote BPM Suite 6 runtime environment.
 The above commands assume that your $JBOSS_HOME is at:  /opt/jboss_bpm_soa/jboss-eap-6.1 .
 Modify these commands as appropriate for your environment.
 
 
-=== BPM Suite 6: Define dependency on custom workItemHandler
+=== BPM Suite 6: Define module dependency on Spring workItemHandler
 Now that the  _org.spring_ and the _com.redhat.gpe.refarch.bpm_servicetasks_ JBoss Modules have been made available to JBoss EAP, the next step is to define an explicit dependency on these new modules to the BPM Suite 6 business-central web application.
 
 . edit $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/jboss-deployment-structure.xml
@@ -110,8 +110,23 @@ Now that the  _org.spring_ and the _com.redhat.gpe.refarch.bpm_servicetasks_ JBo
 </jboss-deployment-structure>
 -----
 
+=== BPM Suite 6: Define Service Task mapping
+This reference architecture includes a BPMN process definition called:  _spring_servicetask_.
+This process definition includes a Service Task called: _SpringServiceTask_.
+This name now needs to be mapped to our custom Spring-based workItemHandler.
+Do this in the _CustomWorkItemHandlers.conf_ file of the business-central web archive:
+
+. ssh into your remote BPM Suite 6 environment.
+. edit:  $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf
+. Add the following mapping:
+
+-----
+"SpringServiceTask": new com.redhat.gpe.refarch.bpm_servicetasks.wih.SpringPersistenceWIH(ksession)
+-----
+
 [start=2]
 . Bounce your BPM Suite 6 java run-time.
+
 
 === App RDBMS: Allow for XA transactions
 
