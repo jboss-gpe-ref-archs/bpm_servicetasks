@@ -1,5 +1,8 @@
 package com.redhat.gpe.refarch.bpm_servicetasks.wih;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -7,13 +10,12 @@ import javax.sql.DataSource;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemManager;
-import org.kie.api.runtime.process.WorkItemHandler;
-import org.kie.api.runtime.process.WorkflowProcessInstance;
+import org.jbpm.process.core.context.variable.VariableScope;
+import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.process.workitem.AbstractLogOrThrowWorkItemHandler;
-
+import org.jbpm.ruleflow.instance.RuleFlowProcessInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
@@ -38,8 +40,16 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
             Integer nextVal = (Integer)jdbcTemplate.queryForObject("select nextval('customerId')", Integer.class);
             jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextVal, "Azra and Alex", "Bride");
 
-            WorkflowProcessInstance pInstance = (WorkflowProcessInstance)sessionObj.getProcessInstance(workItem.getProcessInstanceId());
+            RuleFlowProcessInstance pInstance = (RuleFlowProcessInstance)sessionObj.getProcessInstance(workItem.getProcessInstanceId());
             log.info("executeWorkItem() just inserted record into customer table with id = "+nextVal+ " : pInstanceId = "+pInstance.getId());
+            
+            VariableScopeInstance vScopeInstance = (VariableScopeInstance) pInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
+            Map<String, Object> variables = vScopeInstance.getVariables();
+            StringBuilder sBuilder = new StringBuilder("executeWorkItem() original pVariables = ");
+            for(Entry<String, Object> entry: variables.entrySet()){
+            	sBuilder.append("\n"+entry.getKey()+" : "+entry.getValue());
+            }
+            log.info(sBuilder.toString());
 
             // notify manager that work item has been completed
             manager.completeWorkItem(workItem.getId(), null);
