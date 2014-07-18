@@ -4,6 +4,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemManager;
 import org.kie.api.runtime.process.WorkItemHandler;
