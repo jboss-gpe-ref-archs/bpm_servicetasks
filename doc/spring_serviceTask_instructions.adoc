@@ -78,8 +78,24 @@ The Spring libraries archived in a zip file and pushed to your BPM Suite 6 envir
 layers=bpms,gpe
 -----
 
-=== BPM Suite 6: Define dependency on org.spring module
-Now that _org.spring_ JBoss Module has been made available to JBoss EAP, the next step is to define an explicit dependency on this new _org.spring_ module to the BPM Suite 6 business-central web application.
+=== local:  deploy the Spring custom work item handler
+This reference architecture includes a Spring-based custom workItemHandler at:  $REF_ARCH_HOME/wih/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.
+Execute the following in your local environment to make this Spring custom workItemHandler available for use in BPM Suite 6:
+
+-----
+cd $REF_ARCH_HOME/wih
+mvn clean install -DskipTests
+scp -r conf/modules/ jboss@docker_bpms:/opt/jboss_bpm_soa/jboss-eap-6.1
+scp target/wih-1.0.jar jboss@docker_bpms:/opt/jboss_bpm_soa/jboss-eap-6.1/modules/system/layers/gpe/com/redhat/gpe/refarch/bpm_servicetasks/main/
+-----
+
+Collectively, the above commands build _wih-1.0.jar_ (which contains the SpringPersistenWIH class) and deploys it as a JBoss Module to the remote BPM Suite 6 runtime environment.
+The above commands assume that your $JBOSS_HOME is at:  /opt/jboss_bpm_soa/jboss-eap-6.1 .
+Modify these commands as appropriate for your environment.
+
+
+=== BPM Suite 6: Define dependency on custom workItemHandler
+Now that the  _org.spring_ and the _com.redhat.gpe.refarch.bpm_servicetasks_ JBoss Modules have been made available to JBoss EAP, the next step is to define an explicit dependency on these new modules to the BPM Suite 6 business-central web application.
 
 . edit $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/jboss-deployment-structure.xml
 .. go to the bottom of the file and add a module dependency on the new _org.spring_ JBoss Module:
@@ -87,7 +103,7 @@ Now that _org.spring_ JBoss Module has been made available to JBoss EAP, the nex
 -----
 <module name="org.yaml.snakeyaml" export="true" services="import" meta-inf="import"/>
 
-<module name="org.spring" export="true" services="import" meta-inf="import"/>
+<module name="com.redhat.gpe.refarch.bpm_servicetasks" export="true" services="import" meta-inf="import"/>
 
   </dependencies>
 </deployment>
@@ -184,20 +200,6 @@ https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
 -----
 
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
-
-=== local:  enable the Spring custom work item handler
-This reference architecture includes a Spring custom workItemHandler at:  $REF_ARCH_HOME/processTier/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.bk
-This is a java source file with the additional _.bk_ suffix added so as to not compile by default and interfere with other examples in this reference architecture that do not use Spring libraries.
-Execute the following in your local environment to enable this Spring custom workItemHandler:
-
------
-cd $REF_ARCH_HOME
-git mv processTier/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.bk  processTier/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java
-git commit -m 'enabling Spring WIH'
-git push docker_bpms master
------
-
-The last command from above, pushes the change in the bpm_servicetasks git project to the .niogit/bpmservicetasks bare repository used by BPM Suite 6.
 
 
 === BPM Suite 6:  Build and Deploy _processTier_ project
