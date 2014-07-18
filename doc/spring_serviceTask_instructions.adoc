@@ -28,7 +28,7 @@ For the purposes of this documentation, this directory will be referred to as $R
 
 === local: Build the Reference Architecture
 This reference architecture includes a _modules_ sub-project that needs to be built locally.
-To build the various sub-projects, execute the following:
+To build this _modules_ sub-project, execute the following:
 
 . cd $REF_ARCH_HOME/modules
 . mvn clean install -DskipTests
@@ -56,7 +56,9 @@ modules/system/layers/gpe/org/spring/main/spring-core-3.2.3.RELEASE.jar
 -----
 
 +
-These Spring framework libraries are going to be added to the java classpath of your remote BPM Suite 6 runtime.
+These Spring framework libraries are going to be added to the java classpath of your remote BPM Suite 6 runtime as JBoss modules.
+Of note are the contents of:  modules/system/layers/gpe/org/spring/main/module.xml .
+Notice that it defines a new JBoss Module called:  _org.spring_ .
 
 . Secure copy this zip library to your remote BPM Suite 6 environment:
 
@@ -65,6 +67,7 @@ scp $REF_ARCH_HOME/modules/target/persistence.service.modules.zip <ssh.url.to.yo
 -----
 
 === BPM Suite 6: Deploy Spring framework JBoss module
+The Spring libraries archived in a zip file and pushed to your BPM Suite 6 environment in the previous section now needs to be unzipped and made available as a new JBoss Module.
 
 . ssh to your remote BPM Suite 6 environment
 . cd $JBOSS_HOME
@@ -76,6 +79,8 @@ layers=bpms,gpe
 -----
 
 === BPM Suite 6: Define dependency on org.spring module
+Now that _org.spring_ JBoss Module has been made available to JBoss EAP, the next step is to define an explicit dependency on this new _org.spring_ module to the BPM Suite 6 business-central web application.
+
 . edit $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/jboss-deployment-structure.xml
 .. go to the bottom of the file and add a module dependency on the new _org.spring_ JBoss Module:
 
