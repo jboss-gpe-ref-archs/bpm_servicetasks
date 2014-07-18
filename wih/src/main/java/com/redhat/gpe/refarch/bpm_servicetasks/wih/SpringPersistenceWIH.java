@@ -1,12 +1,14 @@
-package com.redhat.gpe.refarch.bpm_servicetasks.processtier;
+package com.redhat.gpe.refarch.bpm_servicetasks.wih;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemManager;
 import org.kie.api.runtime.process.WorkItemHandler;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 import org.jbpm.process.workitem.AbstractLogOrThrowWorkItemHandler;
 
 import org.slf4j.Logger;
@@ -22,14 +24,22 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     // JdbcTemplate is thread-safe
     private static JdbcTemplate jdbcTemplate; // enable me
 
+    private KieSession sessionObj = null;
+
     public SpringPersistenceWIH() {}
+
+    public SpringPersistenceWIH(KieSession sessionObj) {
+	this.sessionObj = sessionObj;
+    }
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         try {
             getJdbcTemplate();
             Integer nextVal = (Integer)jdbcTemplate.queryForObject("select nextval('customerId')", Integer.class);
-            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextval, "Azra and Alex", "Bride");
-            log.info("executeWorkItem() just inserted record into customer table with id = "+nextVal);
+            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextVal, "Azra and Alex", "Bride");
+
+            WorkflowProcessInstance pInstance = (WorkflowProcessInstance)sessionObj.getProcessInstance(workItem.getProcessInstanceId());
+            log.info("executeWorkItem() just inserted record into customer table with id = "+nextVal+ " : pInstanceId = "+pInstance.getId());
 
             // notify manager that work item has been completed
             manager.completeWorkItem(workItem.getId(), null);

@@ -8,10 +8,10 @@
     <version>1.1-redhat-5</version>
   </parent>
   <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
-  <artifactId>processTier</artifactId>
+  <artifactId>wih</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
-  <name>processTier</name>
+  <name>wih</name>
 
   <properties>
     <spring.version>3.2.3.RELEASE</spring.version>
