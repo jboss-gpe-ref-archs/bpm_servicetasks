@@ -1,9 +1,0 @@
-# datasource configuration to test database
-if (outcome != success) of /profile=pfpCore/subsystem=datasources/xa-data-source=test-cp-xa:read-attribute(name=enabled)
-
-    /profile=pfpCore/subsystem=datasources/xa-data-source=test-cp-xa:add(jndi-name=java:jboss/datasources/test-cp-xa,driver-name=postgresql,user-name=test,password=test,max-pool-size=5,min-pool-size=1,xa-datasource-class=org.postgresql.xa.PGXADataSource)
-    /profile=pfpCore/subsystem=datasources/xa-data-source=test-cp-xa/xa-datasource-properties=ServerName/:add(value=a2a046610049)
-    /profile=pfpCore/subsystem=datasources/xa-data-source=test-cp-xa/xa-datasource-properties=DatabaseName/:add(value=test)
-    /profile=pfpCore/subsystem=datasources/xa-data-source=test-cp-xa/:write-attribute(name=new-connection-sql,value="select 1;")
-    /profile=pfpCore/subsystem=datasources/xa-data-source=test-cp-xa:enable()
-end-if
