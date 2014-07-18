@@ -8,6 +8,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemManager;
 import org.kie.api.runtime.process.WorkItemHandler;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 import org.jbpm.process.workitem.AbstractLogOrThrowWorkItemHandler;
 
 import org.slf4j.Logger;
