@@ -6,10 +6,11 @@
 
 image::images/springservicetask.png[]
 
-Purpose of this example is to demonstrate use of a custom workItemHandler that leverages the Spring framework to persist a record in a database. 
+Purpose of this example is to demonstrate use of a custom workItemHandler that leverages the Spring framework to persist a record in an application database. 
 This approach should be avoided if possible. 
 Instead, it is preferrable that business functions that leverages third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task. 
 In some edge cases however, SOA may not be an option and thus this business functionality needs to run in the same thread of execution as the BPM process engine.
+The application database selected for this reference architecture is:  postgresql.
 
 == Config and Deployment:  Local Environment
 
@@ -63,7 +64,7 @@ These Spring framework libraries are going to be added to the java classpath of 
 scp $REF_ARCH_HOME/modules/target/persistence.service.modules.zip <ssh.url.to.your.bpm.environment>:/tmp
 -----
 
-=== BPM Suite 6: Register Spring framework JBoss module as explicit dependency
+=== BPM Suite 6: Deploy Spring framework JBoss module
 
 . ssh to your remote BPM Suite 6 environment
 . cd $JBOSS_HOME
@@ -74,6 +75,7 @@ scp $REF_ARCH_HOME/modules/target/persistence.service.modules.zip <ssh.url.to.yo
 layers=bpms,gpe
 -----
 
+=== BPM Suite 6: Define dependency on org.spring module
 . edit $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/jboss-deployment-structure.xml
 .. go to the bottom of the file and add a module dependency on the new _org.spring_ JBoss Module:
 
@@ -87,19 +89,29 @@ layers=bpms,gpe
 </jboss-deployment-structure>
 -----
 
+[start=2]
 . Bounce your BPM Suite 6 java run-time.
 
-=== RDBMS: Create a new example _test_ database and _customer_ table
+=== App RDBMS: Allow for XA transactions
 
-The Spring custom work item handler included in this reference architecture, writes to a _customer_ table in a _test_ database.
-This section documents the creation of these database objects using PostgreSQL.
-Modify these instructions as appropriate for your application database
+The BPM Suite 6 process engine writes its state to a relational database.
+If using the BPM Openshift cartridge, the database used to support BPM Suite 6 is:  mysql.
+The Spring custom work item handler included in this reference architecture, writes to an application database in the same JTA transaction used by the process engine.
+Thus, when using this Spring custom work item handler, XA transactions are needed to support persisting to two different resources.
+This section documents the configuration of postgresql to support XA transactions.
+Modify these instructions as appropriate for your application database.
 
 . (as postgres user) :  enable prepared transactions by uncommenting the following in ~/data/postgresql.conf
 
 -----
 max_prepared_transactions = 10 
 -----
+
+=== App RDBMS: Create database objects
+
+The Spring custom work item handler included in this reference architecture, writes to a _customer_ table in a _test_ database.
+This section documents the creation of these database objects using PostgreSQL.
+Modify these instructions as appropriate for your application database.
 
 . restart postgresql
 . (as postgres user) : create user test with password 'test';
