@@ -11,7 +11,10 @@ Purpose of this example is to demonstrate use of a custom workItemHandler that l
 This approach should be avoided if possible. 
 Instead, it is preferrable that business functions that leverage third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task. 
 In some edge cases however, SOA may not be an option and thus this business functionality needs to run in the same thread of execution as the BPM process engine.
+
 The application database selected for this reference architecture is:  postgresql.
+
+The Spring framework functionality used to persist data is:  org.springframework.jdbc.core.JdbcTemplate
 
 == Config and Deployment:  Local Environment
 
