@@ -102,7 +102,7 @@ Modify these commands as appropriate for your environment.
 Now that the  _org.spring_ and the _com.redhat.gpe.refarch.bpm_servicetasks_ JBoss Modules have been made available to JBoss EAP, the next step is to define an explicit dependency on these new modules to the BPM Suite 6 business-central web application.
 
 . edit $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/jboss-deployment-structure.xml
-.. go to the bottom of the file and add a module dependency on the new _org.spring_ JBoss Module:
+.. go to the bottom of the file and add a module dependency on the new _com.redhat.gpe.refarch.bpm_servicetasks_ JBoss Module:
 
 -----
 <module name="org.yaml.snakeyaml" export="true" services="import" meta-inf="import"/>
