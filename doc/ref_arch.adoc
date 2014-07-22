@@ -64,10 +64,8 @@ An _asynch_ Service Task may be ideal for BPM scenarious where process engine pe
 Asynchroneous Service Tasks are often implemented such that they invoke an _Executor Service_ and place the process engine in a _wait-state_.
 The _Executor Service_ becomes responsible for invoking business logic (such as a SOA service) and signalling the process instance out of its wait-state upon completion of the business logic.
 
-BPM Suite 6 does not include a supported out-of-the-box _Executor Service_.
-A community supported _Executor Service_ is available however from the open-source jbpm project.
-
-This reference architecture provides a working example of an Asynchroneous Service Task invoking the jbpm Executor Service.
+BPM Suite 6 includes a supported out-of-the-box _Executor Service_.
+This reference architecture provides a working example of an Asynchroneous Service Task invoking the BPM Suite 6 Executor Service.
 Details of this example can be found link:async_serviceTask_instructions.adoc[here].
 
 === Spring ServiceTask
