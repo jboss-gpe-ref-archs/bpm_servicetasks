@@ -104,10 +104,10 @@ As an alternative, BPM Suite 6 includes a _Data Modeler_ tool.
 The Data Modeler tool allows for the creation of domain model classes to be used for your BPM Suite 6 KIE projects.
 Specifically, these Data Modeler generated domain-model classes are useful at design-time to facilate creation of rules, BPMN2 process definitions, forms, etc.
 These domain-model classes are also useful at runtime to facilitate the execution of rules and process instances included in a KIE project.
-In summary, the scope of a Data Modeler generated _processTier_ domain model is specific to KIE workbench tooling and KIE project execution.
+*In summary, the scope of a Data Modeler generated _processTier_ domain model is specific to KIE workbench tooling and KIE project execution.*
 
-This _processTier_ domain model should generally not be used outside the scope of the KIE workbench nor KIE project execution.
-When integration between a process instance and SOA services is needed, it is a best practice to define an additional _integration_ domain model.
+*This _processTier_ domain model should generally not be used outside the scope of the KIE workbench and KIE project execution.*
+*When integration between a process instance and SOA services is needed, it is a best practice to define an additional _integration_ domain model.*
 Transformations between _integration_ and _processTier_ domain models are common:
 
 . *inbound through BPM Suite 6 Execution Server:* 
