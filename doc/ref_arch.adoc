@@ -41,6 +41,8 @@ This approach should be avoided since the execution of this business logic will 
 Instead, it is preferrable that business functions that leverage third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task.
 In some edge cases however, SOA may not be an option.
 
+All the details and instructions for the _spring_servicetask_ example can be found link:spring_serviceTask_instructions.adoc[here].
+
 == Pre-Requisites
 The remainder of this documentation provides instructions for installation, configuration and execution of this reference architecture. 
 The following is a list of pre-requisites:
