@@ -51,6 +51,20 @@ to-do
 === EJB ServiceTask
 to-do
 
+=== Async Service Task
+With most Service Tasks, the underlying WorkItemHandler implementation blocks waiting for the business logic that it has invoked to complete.
+Subsequently, the process engine that invoked the WorkItemHandler also blocks until execution of the business logic completes.
+Exceptions that may occur during execution of the business logic can be caught in the WorkItemHandler and handled as appropriate.
+The results from execution of the business logic can be mapped to process instance variables and subsequently used by down-stream nodes of the process instance.
+These characteristics of synchroneous Service Tasks are often ideal in many BPM use cases involving low -> medium load of long running process instances.
+
+An _asynchroneous_ Service Task does not block waiting for the business logic that it has invoked to complete.
+Instead, the WorkItemHandler spawns a new thead that is used to execute the business logic.
+An _asynch_ Service Task may be ideal for BPM scenarious where process engine performance is the priority.
+Asynchroneous Service Tasks are often implemented such that they invoke an _Executor Service_ and place the process engine in a _wait-state_.
+The _Executor Service_ becomes responsible for invoking business logic (such as a SOA service) and signalling the process instance out of its wait-state upon completion of the business logic.
+
+
 === Spring ServiceTask
 
 image::images/springservicetask.png[]
