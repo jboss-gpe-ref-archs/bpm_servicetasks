@@ -115,6 +115,22 @@ A BPMN2 process definition should conduct as its first node the following transf
 . *outbound through Service Tasks:*
 A BPMN2 process definition should conduct the following transformtion just prior to a service task node:  _processTierDomain_ -> _integrationDomain_ 
 
+=== BPM Suite 6:  Define Service Task mapping
+The various process definitions included in this reference architecture utilize Service Tasks to invoke remote SOA services.
+The name of these Service Tasks needs to be mapped to a jBPM WorkItemHandler implementation.
+This mapping subsequently needs to be registered with the process engine.
+The mapping between Service Task name and its workItemHandler implementation can be defined in a pre-existing BPM Suite 6 configuration file.
+This can be accomplished as follows:
+
+. ssh into your remote BPM Suite 6 environment
+. edit:  $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf
+.. notice this existing mappings for various base-product Service Tasks (Log, WebService, Rest)
+.. append the following mapping:
+
+-----
+"ServiceTask": new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession)
+-----
+
 === BPM Suite 6:  Clone this reference architecture
 This reference architecture includes a KIE project called: _processTier_ .
 The _processTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
