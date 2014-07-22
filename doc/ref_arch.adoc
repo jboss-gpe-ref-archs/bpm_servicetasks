@@ -23,11 +23,13 @@ BPM Suite 6 includes two out-of-the-box implementations to invoke remote SOAP se
 .. Alligns with the Service Task defined in the BPMN2 specification
 .. Allows for invoking either a SOAP service or a Java class
 .. SOAP client leverages Apache CXF Dynamic Dispatch
-.. As of 6.0.2, the WorkItemHandler implementation does not extend AbstractLogOrThrowWorkItemHandler
-... WorkItemHandler implementation will extend AbstractLogOrThrowWorkItemHandler in BPM Suite 6.1
+.. As of 6.0.2, the WorkItemHandler implementation (org.jbpm.process.workitem.bpmn2.ServiceTaskHandler) does not extend AbstractLogOrThrowWorkItemHandler
+... ServiceTaskHandler class will extend AbstractLogOrThrowWorkItemHandler in BPM Suite 6.1
+.. As of 6.0.2, _ServiceTask_ mapping is not included in the out-of-the-box _CustomWorkItemHandlers.conf_ configuration file.
 . WebService
 .. SOAP client leverages Apache CXF Dynamic Dispatch
 .. WorkItemHandler implementation extends AbstractLogOrThrowWorkItemHandler
+.. _WebService_ mapping is included in the out-of-the-box _CustomWorkItemHandlers.conf_ configuration file.
 
 ==== CXF Dynamic Dispath : complex types
 Both BPM Suite 6 SOAP-based WorkItemHandlers leverage Apache CXF Dynamic Dispatch to invoke remote SOAP services.
