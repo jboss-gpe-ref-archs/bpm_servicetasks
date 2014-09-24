@@ -26,7 +26,7 @@ public class AsyncWIH extends AbstractLogOrThrowWorkItemHandler {
     public AsyncWIH() {}
 
     public AsyncWIH(KieSession sessionObj) {
-	this.sessionObj = sessionObj;
+    this.sessionObj = sessionObj;
     }
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {

@@ -31,7 +31,7 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     public SpringPersistenceWIH() {}
 
     public SpringPersistenceWIH(KieSession sessionObj) {
-	this.sessionObj = sessionObj;
+    this.sessionObj = sessionObj;
     }
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
@@ -47,7 +47,7 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
             Map<String, Object> variables = vScopeInstance.getVariables();
             StringBuilder sBuilder = new StringBuilder("executeWorkItem() original pVariables = ");
             for(Entry<String, Object> entry: variables.entrySet()){
-            	sBuilder.append("\n"+entry.getKey()+" : "+entry.getValue());
+                sBuilder.append("\n"+entry.getKey()+" : "+entry.getValue());
             }
             log.info(sBuilder.toString());
 
