@@ -19,20 +19,20 @@ image::images/soapservicetasks.png[]
 
 BPM Suite 6 includes two out-of-the-box implementations to invoke remote SOAP services from a BPM Process.
 
-. ServiceTask
+. *BPMN2 ServiceTask*
 .. Alligns with the Service Task defined in the BPMN2 specification
 .. Allows for invoking either a SOAP service or a Java class
 .. SOAP client leverages Apache CXF Dynamic Dispatch
 .. As of 6.0.2, the WorkItemHandler implementation (org.jbpm.process.workitem.bpmn2.ServiceTaskHandler) does not extend AbstractLogOrThrowWorkItemHandler
 ... ServiceTaskHandler class will extend AbstractLogOrThrowWorkItemHandler in BPM Suite 6.1
 .. As of 6.0.2, _ServiceTask_ mapping is not included in the out-of-the-box _CustomWorkItemHandlers.conf_ configuration file.
-. WebService
+. *BPM Suite 6 WebService Service Task*
 .. SOAP client leverages Apache CXF Dynamic Dispatch
 .. WorkItemHandler implementation extends AbstractLogOrThrowWorkItemHandler
 .. _WebService_ mapping is included in the out-of-the-box _CustomWorkItemHandlers.conf_ configuration file.
 
 ==== CXF Dynamic Dispath : complex types
-Both BPM Suite 6 SOAP-based WorkItemHandlers leverage Apache CXF Dynamic Dispatch to invoke remote SOAP services.
+Both of BPM Suite 6 SOAP-based WorkItemHandlers introduced previously leverage Apache CXF Dynamic Dispatch to invoke remote SOAP services.
 An Apache CXF Dynamic Dispatch client is capable of invoking remote SOAP services with JAXB annotated complex types.
 In order for those complex types to be marshalled into XML, they need to be on the Java classpath of BPM Suite 6.
 The complex type classes must *not* be in the Kie project .... otherwise, ClassCastExceptions will occur.
@@ -45,75 +45,129 @@ image::images/restservicetask.png[]
 
 to-do: elaborate on details
 
-=== JMS ServiceTask 
-to-do
-
-=== EJB ServiceTask
-to-do
-
-=== Async Service Task
-With most Service Tasks, the underlying WorkItemHandler implementation blocks waiting for the business logic that it has invoked to complete.
-Subsequently, the process engine that invoked the WorkItemHandler also blocks until execution of the business logic completes.
-Exceptions that may occur during execution of the business logic can be caught in the WorkItemHandler and handled as appropriate.
-The results from execution of the business logic can be mapped to process instance variables and subsequently used by down-stream nodes of the process instance.
-These characteristics of synchroneous Service Tasks are often ideal in many BPM use cases involving low -> medium load of long running process instances.
-
-An _asynchroneous_ Service Task does not block waiting for the business logic that it has invoked to complete.
-Instead, the WorkItemHandler spawns a new thead that is used to execute the business logic.
-An _asynch_ Service Task may be ideal for BPM scenarious where process engine performance is the priority.
-Asynchroneous Service Tasks are often implemented such that they invoke an _Executor Service_ and place the process engine in a _wait-state_.
-The _Executor Service_ becomes responsible for invoking business logic (such as a SOA service) and signalling the process instance out of its wait-state upon completion of the business logic.
-
-BPM Suite 6 includes a supported out-of-the-box _Executor Service_.
-This reference architecture provides a working example of an Asynchroneous Service Task invoking the BPM Suite 6 Executor Service.
-Details of this example can be found link:async_serviceTask_instructions.adoc[here].
-
-=== Spring ServiceTask
-
-image::images/springservicetask.png[]
-
-Purpose of this example is to demonstrate use of a custom workItemHandler that uses the Spring framework to persist a record in a database.
-With this approach, the business functionality in the customWorkItemHandler will execute in the same thread of execution as the process engine.
-This approach should be avoided since the execution of this business logic will be that bottleneck that hampers performance of the process engine.
-Instead, it is preferrable that business functions that leverage third-party libraries be encapsulated as a service (as per SOA) and invoked by a SOAP/REST/EJB service task.
-In some edge cases however, SOA may not be an option.
-
-All the details and instructions for the _spring_servicetask_ example can be found link:spring_serviceTask_instructions.adoc[here].
-
 == Pre-Requisites
-The remainder of this documentation provides instructions for installation, configuration and execution of this reference architecture. 
+The remainder of this documentation provides instructions for installation, configuration and execution of this reference architecture in Red Hat's Partner Demo System.
 The following is a list of pre-requisites:
 
-. maven 3.0.5 (or greater)
-. git client
-. familiarity with {bpmproduct}
-. proficiency with utilities provided by the _bash_ shell 
+. OPENTLC-SSO credentials
++
+`OPENTLC-SSO` user credentials are used to log into the Red Hat Partner Demo System (PDS).
+If you do not currently have an `OPENTLC-SSO` userId, please email: `OPEN-program@redhat.com`.
 
+. Familiarity with Partner Demo System
++
+If you are not already familiar with Red Hat's `Partner Demo System`, please execute what is detailed in the {mwlaboverviewsetup} guide.
+Doing so will ensure that you are proficient with the tooling and workflow needed to complete this reference architecture in an OpenShift Platform as a Service environment.
+
+. Familiarity with {bpmproduct}
+
+== Provision BPM Suite 6 application
+
+. Open the `Openshift Explorer` panel of the `JBoss` perspective of JBDS
+. Right-click on the previously created connection to `broker00.ose.opentlc.com`.
++
+Using your `OPENTLC-SSO` credentials, a connection to `broker00.ose.opentlc.com` should already exist after having completed the {mwlaboverviewsetup} guide.
+
+. Select: `New -> Application` .
++
+Since you have already created a domain from the previous introductory lab, the workflow for creation of a new application will be slightly different than what you are used to.
+In particular, the OSE plugin will not prompt you for the creation of a new domain.
+
+. The following `New or existing OpenShift Application` pop-up should appear:
++
+image::images/new_OSE_app_bpm.png[]
+
+.. In the `Name` text box, enter: `bpmsapp`
+.. From the `Type` drop-down, select: JBoss BPMS 6.0 (rhgpe-bpms-6.0)
+.. From the `Gear profile` drop-down, select: pds_medium
+. Click `Next`
+. A new dialogue appears entitled `Set up Project for new OpenShift Aplication`.
++
+Check the check box for `Disable automatic maven build when pushing to OpenShift`.
+Afterwards, Click `Next`.
+
+. A new dialogue appears entitled `Import an existing OpenShift application`.
++
+Even though it will not be used, you will be forced to clone the remote git enabled project associated with your new OpenShift application.
+Select a location on your local filesystem where the git enabled project should be cloned to.
++
+image::images/gitclonelocation_bpm.png[]
+
+. Click `Finish`
+. The OSE plugin of JBDS will spin for a couple of minutes as the remote BPM Suite 6 enabled OpenShift application is created.
+. Eventually, the OSE plugin will prompt with a variety of pop-up related details regarding your new application.
++
+Click through all of them except when you come to the dialogue box entitled `Publish bpmsapp?`.
+For this dialogue box, click `No`
++
+image::images/publishbpmslab.png[]
+
+=== BPM Suite 6 App Verification
+
+. Using the `Remote System Explorer` perspective of JBDS, open an SSH terminal and tail the `bpms/standalone/log/server.log` of your remote BPM Suite 6 enabled OSE application
+. Log messages similar to the following should appear:
++
+image::images/newbpmlogfile.png[]
 == Config and Deployment:  Local Environment
 If your interest is in the _spring_ServiceTask_ example, please follow the instructions found link:spring_serviceTask_instructions.adoc[here].
 If your interest is in the _async_ServiceTask_ example, please follow the instructions found link:async_serviceTask_instructions.adoc[here].
 Otherwise, for all other examples in this reference architecture, follow the next series of instructions.
 
-=== local:  Clone this reference architecture
+=== local: Clone this reference architecture
 This reference architecture will be cloned both in your local computer as well as in your remote BPM Suite 6 Openshift environment.
 To clone this reference architecture in your local environment, execute the following:
 
---------
-git clone https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
---------
+. Open the `Git` perspective of JBDS.
+. In the `Git Repositories` panel, click the link that allows you to `Clone a Git Repository and add the clone to this view`
+. A pop-up should appear with a name of `Source Git Repository`
+. In the `URI` field, enter the following:
++
+-----
+https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
+-----
 
-Doing so will create a directory in your local computer called:  bpm_servicetasks.
-For the purposes of this documentation, this directory will be referred to as $REF_ARCH_HOME.
+. Click `Next`
++
+image::images/clone_repo_to_local.png[]
+
+. Continue to click `Next` through the various screens
++
+On the pop-up screen entitled `Local Destination`, change the default value of the `Directory` field to your preferred location on disk.
+For the purposes of the remainder of these instructions, this directory on your local filesystem will be referred to as:  $REF_ARCH_HOME
+
+. On the last screen of the `Clone Git Repository` pop-up, click `Finish`
++
+Doing so will clone this `bpm_servicetasks` project to your local disk
+
+. In JBDS, switch to the `Project Explorer` panel and navigate to:  `File -> Import -> Maven -> Existing Maven Projects`
+. In the `Root Directory` field of the `Maven Projects` pop-up, navigate to the location on disk where the `bpm_servicetasks` project was just cloned to.
++
+image::images/import_mvn_project.png[]
+
+. Click `next` through the various pop-up panels and finally `Finish`.
+. Your `Project Explorer` panel should now include the following mavenized projects
++
+image::images/maven_projects.png[]
 
 === local: Build the Reference Architecture
-This reference architecture includes various sub-projects that need to be built locally. 
+This reference architecture includes various sub-projects that need to be built locally.
 To build the various sub-projects, execute the following:
 
-. cd $REF_ARCH_HOME
-. mvn clean install -DskipTests
+. In the `Project Explorer` panel of JBDS, right-click on the `parent` project
+. Navigate to: `Run As -> Maven Install`
+. In the `Console` panel, a `BUILD SUCCESS` log message should appear.
++
+image::images/maven_build_success.png[]
 
-== Configuration and Deployment:  BPM Suite 6
+=== local: Build the Reference Architecture
+This reference architecture includes various sub-projects that need to be built locally.
+To build the various sub-projects, execute the following:
 
+. In the `Project Explorer` panel of JBDS, right-click on the `parent` project
+. Navigate to: `Run As -> Maven Install`
+. In the `Console` panel, a `BUILD SUCCESS` log message should appear.
++
+image::images/maven_build_success.png[]
 
 === BPM Suite 6:  Add domain-model jar to classpath of business-central
 The _processTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
@@ -130,11 +184,16 @@ JBoss EAP 6 allows for two different options for adding the libraries to the cla
 . Add the domain model jar to: business-central.war/WEB-INF/lib
 
 For the purpose of this reference architecture, the latter approach will be used.
-In your remote BPM Suite 6 enabled OpenShift environment, execute a command similar to the following:
+To do so, execute the following:
 
-------
-scp $REF_ARCH_HOME/domain/target/domain-1.0.jar  <ssh_url_to_your_remote_gear>:~/bpms/standalone/deployments/business-central.war/WEB-INF/lib
-------
+. In the `Project Explorer` panel of the `JBOSS` perspective of JBDS, right-click on the `domain/target/bpm_rulesMgmt_domain.jar` in `Project Explorer` and select `Copy`.
++
+image::images/domainjar.png[]
+
+.. In the `Remote System Explorer` perspective of JBDS, navigate to `bpmsapp-<your domain>.apps.ose.opentlc.com -> Sftp Files -> My Home -> bpms -> standalone -> deployments -> business-central.war -> WEB-INF -> lib`
+.. Right-click and select `Paste`
++
+image::images/pastedomainjarintobizcentral.png[]
 
 === BPM Suite 6:  Discussion regarding domain models
 In this reference architecture, a single java library with domain model classes is shared between the _processTier_ and the _servicesTier_.
@@ -163,14 +222,19 @@ This mapping subsequently needs to be registered with the process engine.
 The mapping between Service Task name and its workItemHandler implementation can be defined in a pre-existing BPM Suite 6 configuration file.
 This can be accomplished as follows:
 
-. ssh into your remote BPM Suite 6 environment
-. edit:  $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf
-.. notice this existing mappings for various base-product Service Tasks (Log, WebService, Rest)
-.. append the following mapping:
-
+. In the `Remote System Explorer` perspective, ssh into the `bpmsapp` gear.
+. execute: vi `~/bpms/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf`
+.. notice the existing mappings for various base-product Service Tasks (Log, WebService, Rest)
+.. add a comma to the end of the last service task mapping and then append the following:
++
 -----
 "ServiceTask": new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession)
 -----
++
+image::images/customservicetasks.png[]
+
+. Save the change and quit
+. Switch back to the `OpenShift Explorer` panel in JBDS and restart the `bpmsapp` application.
 
 === BPM Suite 6:  Clone this reference architecture
 This reference architecture includes a KIE project called: _processTier_ .
@@ -276,5 +340,28 @@ Upon starting an instance of soap_servicetask, the following should appear in th
 ** https://bugzilla.redhat.com/show_bug.cgi?id=1098137
 * RESTWorkItemHandler:  automated (un)marshalling
 ** https://bugzilla.redhat.com/show_bug.cgi?id=1098140
+
+
+
+=== EJB ServiceTask
+to-do
+
+=== Async Service Task
+With most Service Tasks, the underlying WorkItemHandler implementation blocks waiting for the business logic that it has invoked to complete.
+Subsequently, the process engine that invoked the WorkItemHandler also blocks until execution of the business logic completes.
+Exceptions that may occur during execution of the business logic can be caught in the WorkItemHandler and handled as appropriate.
+The results from execution of the business logic can be mapped to process instance variables and subsequently used by down-stream nodes of the process instance.
+These characteristics of synchroneous Service Tasks are often ideal in many BPM use cases involving low -> medium load of long running process instances.
+
+An _asynchroneous_ Service Task does not block waiting for the business logic that it has invoked to complete.
+Instead, the WorkItemHandler spawns a new thead that is used to execute the business logic.
+An _asynch_ Service Task may be ideal for BPM scenarious where process engine performance is the priority.
+Asynchroneous Service Tasks are often implemented such that they invoke an _Executor Service_ and place the process engine in a _wait-state_.
+The _Executor Service_ becomes responsible for invoking business logic (such as a SOA service) and signalling the process instance out of its wait-state upon completion of the business logic.
+
+BPM Suite 6 includes a supported out-of-the-box _Executor Service_.
+This reference architecture provides a working example of an Asynchroneous Service Task invoking the BPM Suite 6 Executor Service.
+Details of this example can be found link:async_serviceTask_instructions.adoc[here].
+
 
 =======

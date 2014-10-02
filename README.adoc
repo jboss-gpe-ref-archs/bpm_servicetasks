@@ -1,16 +1,19 @@
 :data-uri:
 :toc2:
-:ref_arch_doc: link:doc/ref_arch.adoc[reference architecture documentation]
+:spring_serviceTask: link:doc/spring_serviceTask.adoc[Spring ServiceTask]
+:soa_serviceTasks: link:doc/soa_serviceTasks.adoc[SOA Service Tasks]
 
 image::doc/images/rhheader.png[width=900]
 
 :numbered!:
 
 == PURPOSE:
-The purpose of this reference architecture is to demonstrate capabilities of BPM Suite 6 _Service Tasks_ to invoke remote SOA services.
-The transports utilized to invoke these remote SOA services are:  REST, SOAP and JMS.
-Advanced use cases of each of these transports are investigated.
 
-== OVERVIEW:
+. *{soa_serviceTasks}*
++ 
+Demonstrates capabilities of BPM Suite 6 _Service Tasks_ that invoke remote SOA services via a variety of protocols (ie: REST and SOAP)
 
-Please refer to the {ref_arch_doc}.
+. *{spring_serviceTask}*
++
+Demonstrates use of a custom workItemHandler that leverages the Spring framework to persist a record in an application database.
+
