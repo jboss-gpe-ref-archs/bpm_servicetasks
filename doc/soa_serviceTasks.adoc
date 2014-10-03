@@ -238,16 +238,6 @@ To build the various sub-projects, execute the following:
 +
 image::images/maven_build_success.png[]
 
-=== local: Build the Reference Architecture
-This reference architecture includes various sub-projects that need to be built locally.
-To build the various sub-projects, execute the following:
-
-. In the `Project Explorer` panel of JBDS, right-click on the `parent` project
-. Navigate to: `Run As -> Maven Install`
-. In the `Console` panel, a `BUILD SUCCESS` log message should appear.
-+
-image::images/maven_build_success.png[]
-
 === BPM Suite 6:  Add domain-model jar to classpath of business-central
 The _processTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
 
@@ -339,7 +329,7 @@ Enter _bpmservicetask_ as the value of the _repository name_.
 The value of _Git URL_ is the URL to this reference architecture in github:
 
 -----
-https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
+https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
 -----
 
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
