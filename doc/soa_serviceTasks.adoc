@@ -31,6 +31,8 @@ BPM Suite 6 includes two out-of-the-box implementations to invoke remote SOAP se
 .. WorkItemHandler implementation extends AbstractLogOrThrowWorkItemHandler
 .. _WebService_ mapping is included in the out-of-the-box _CustomWorkItemHandlers.conf_ configuration file.
 
+Included in this reference architecture is a BPMN2 process definition called `soap_servicetask` that demonstrates use of both SOAP Service Tasks.
+
 ==== CXF Dynamic Dispath : complex types
 Both of BPM Suite 6 SOAP-based WorkItemHandlers introduced previously leverage Apache CXF Dynamic Dispatch to invoke remote SOAP services.
 An Apache CXF Dynamic Dispatch client is capable of invoking remote SOAP services with JAXB annotated complex types.
@@ -38,12 +40,89 @@ In order for those complex types to be marshalled into XML, they need to be on t
 The complex type classes must *not* be in the Kie project .... otherwise, ClassCastExceptions will occur.
 
 ==== WSDLs and Task parameters
+The WebService and BPMN2 Service Tasks expect several parameters passed to.
+The values of those parameters in the `soap_servicetask` BPMN2 definition are as follows:
+
+image::images/soapassignments.png[]
+
+. *Namespace*
++
+URN of SOAP service to invoke
+
+. *Parameter*
++
+Domain model payload that is automatically marshalled by CXF client and sent to remote SOAP service
+
+. *Url*
++
+WSDL URL of remote SOAP service.
++
+Applicable only for the `WebService` Service Task.
+The value of this parameter is created dynamically in the `prepSOAPcall` script task of th `soap_servicetask` BPMN2.
++
+When using the `BPMN2 ServiceTask` the value of the WSDL URL and Namespace need to be hard-coded in an import to the BPMN2 process of type `wsdl`:
++
+image::images/importwsdl.png[]
+
+. *Operation*
++
+SOAP operation to invoke
+
+. *Interface*
++
+SOAP service interface name
+
+
+==== Outstanding issues
+
+* classpath problems with CXF Dynamic Dispatch
+** https://mojo.redhat.com/docs/DOC-942546
+
 
 === REST Service Task 
 
 image::images/restservicetask.png[]
 
-to-do: elaborate on details
+The BPM Suite 6 REST Service Task allows for invocation of a remote RESTful services.
+
+Included in this reference architecture is a BPMN2 process definition called `rest_servicetask`.
+Of interest are the property assignments for the REST service task node:
+
+image::images/restassignments.png[]
+
+. *Method*
++
+HTTP method to be executed.
+Default to `GET`.
+Supports:  `GET, POST, PUT and DELETE`
+
+. *Url*
++
+Mandatory field that defines the resource location to be invoked.
+In this reference architecture, the value of the `Url` field is set dynamically in the `prepRESTcall` script task
+
+. *ContentType*
++
+Data type of payload.
+Mandatory when using POST and PUT.
+
+. *Content*
++
+Actual payload to be sent.
+Mandatory when using POST and PUT.
+In this reference architecture, the value of the `Content` field is set dynamically in the `prepRESTcall` script task
+
+. *Result*
++
+Response payload (if any) is mapped to a String process variable called : `processResults`.
+
+==== Outstanding issues
+
+* RESTWorkItemHandler:  Exception Handling
+** https://bugzilla.redhat.com/show_bug.cgi?id=1098137
+* RESTWorkItemHandler:  automated (un)marshalling
+** https://bugzilla.redhat.com/show_bug.cgi?id=1098140
+
 
 == Pre-Requisites
 The remainder of this documentation provides instructions for installation, configuration and execution of this reference architecture in Red Hat's Partner Demo System.
@@ -228,7 +307,7 @@ This can be accomplished as follows:
 .. add a comma to the end of the last service task mapping and then append the following:
 +
 -----
-"ServiceTask": new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession)
+"Service Task": new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession)
 -----
 +
 image::images/customservicetasks.png[]
@@ -242,7 +321,10 @@ The _processTier_ project includes several BPMN2 process definitions that show-c
 
 Use the following steps to clone this reference architecture in BPM Suite 6:
 
-. Log into the Business-Central web application of BPM Suite 6
+. Log into the `BPM Console`  web application of BPM Suite 6
++
+The userId to use is:  `jboss`  and the password to use is:  `brms`
+
 . navigate to:  Authoring -> Administration.
 . Select `Organizational Units` -> `Manage Organizational Units`
 . Under `Organizational Unit Manager`, select the `Add` button
@@ -271,7 +353,7 @@ Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the mess
 image::images/deployment.png[]
 
 === BPM Suite 6:  Upload and Enable SOA Services
-In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via standard transports:  REST, SOAP and JMS.
+In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via standard protocols:  REST & SOAP.
 These services are implemented utilizing stock JEE functionality provided by the underlying JBoss Enterprise Application Platform.
 In this reference architecture, these SOA services are invoked by the corresponding BPM _Service Tasks_ used in the process definitions included in the _processTier_ KIE project.
 Upload and enable these services to your remote JBoss EAP environment via the following procedure:
@@ -279,53 +361,34 @@ Upload and enable these services to your remote JBoss EAP environment via the fo
 . Navigate your browser to the JBoss EAP Management console
 . Click: Runtime -> Manage Deployments -> Add
 . In the _Create Deployment_ pop-up, click _Choose File_ and navigate to $REF_ARCH_HOME/serviceTier/target/bizservices.war
++
+All SOA services are packaged in the same _bizservices.war_ web artifact.
+
 . Once uploaded, highlight the new web artifact and click the _En/Disable_ button
-
-
++
 image::images/add_service.png[]
 
-
-[start=5]
-. Upon doing so, the jboss server.log file will log the deployment of the various services similar to the following:
-
-----------
-JBAS018210: Register web context: /bizservices
-JBAS018559: Deployed "bizservices.war" (runtime-name : "bizservices.war")
-
-----------
-
-All SOA services are packaged in the same _bizservices.war_ web artifact.
+. Upon doing so, the BPM log file at  `~/bpms/standalone/log/server.log` will log the deployment of the various services similar to the following:
++
+image::images/deployservices.png[]
 
 == Manual Testing
 All BPMN2 process definitions included in the _processTier_ KIE project can be started manually via BPM Central.
 To do so, execute the following:
 
-. Navigate to:  Process Management -> Process Definitions
-. Select the _Start_ icon of any of the listed process definitions.
+. In the `BPM Console`, navigate to:  Process Management -> Process Definitions
+. Select the _Start_ icon of either the `rest_servicetask` or the `soap_servertask` process definition.
++
+image::images/selectbpmn2.png[]
+
 . A form should appear with only a _play_ button to start that specific process.
-. Make sure your $JBOSS_HOME/standalone/log/server.log is being tailed and click this play button.
+. Make sure the `~/bpms/standalone/log/server.log` of your remote BPM Suite 6 environment is being tailed 
+. Click this play button.
 
 === RESULTS:  rest_servicetask
 Upon starting an instance of rest_servicetask, the following should appear in the server.log:
-
---------------
-[stdout] prepRESTCall() policyString = {"driver":{"age":22,"creditScore":null,"dlNumber":null,"driverName":"alex","numberOfAccidents":0,"numberOfTickets":1,"ssn":null},"policyType":null,"price":500,"priceDiscount":null,"vehicleYear":2014}
-[stdout] prepRESTcall() urlSting = http://192.168.5.5:8080/bizservices/policy
-[AuditReview] (http-/192.168.5.5:8080-4) reviewQuote() contentType = application/json : policyObj = 
-    policyType : null
-    price : 500
-    priceDiscount : null
-    vehicle year : 2014
-    driver : 
-        driverName : alex
-        dlNumber : null
-        age : 22
-        accidents : 0
-        tickets : 1
-        SSN : null
-        creditScore : null
-[stdout] (http-/192.168.5.5:8080-9) REST.onExit() processResults = true
---------------
+ 
+image::images/restresult.png[]
 
 The BPMN REST ServiceTask has successfully executed an HTTP POST to a RESTful service.
 The content of the HTTP request was the JSON representation of a Policy object.
@@ -333,15 +396,11 @@ The content of the HTTP request was the JSON representation of a Policy object.
 === RESULTS:  soap_servicetask
 Upon starting an instance of soap_servicetask, the following should appear in the server.log:
 
+image::images/soapresults.png[]
+
 == To-Do
-* classpath problems with CXF Dynamic Dispatch
-** https://mojo.redhat.com/docs/DOC-942546
-* RESTWorkItemHandler:  Exception Handling
-** https://bugzilla.redhat.com/show_bug.cgi?id=1098137
-* RESTWorkItemHandler:  automated (un)marshalling
-** https://bugzilla.redhat.com/show_bug.cgi?id=1098140
 
-
+ifdef::showscript[]
 
 === EJB ServiceTask
 to-do
@@ -363,5 +422,4 @@ BPM Suite 6 includes a supported out-of-the-box _Executor Service_.
 This reference architecture provides a working example of an Asynchroneous Service Task invoking the BPM Suite 6 Executor Service.
 Details of this example can be found link:async_serviceTask_instructions.adoc[here].
 
-
-=======
+endif::showscript[]

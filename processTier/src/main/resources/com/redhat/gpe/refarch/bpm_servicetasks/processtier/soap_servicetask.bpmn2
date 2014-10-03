@@ -75,9 +75,9 @@ System.out.println("prepSOAPCall() xml representation of policy = "+sw.toString(
 
 if(useWS == true) {
     // WebServiceWorkItemHandler allows for dynamically setting the WSDL URL to invoke
-    // Use java.bind.address system property to set URL to auditReview WSDL
+    // Use jgroups.bind_addr system property to set URL to auditReview WSDL
     // (which for this reference architecture is assumed to be co-located in same JVM)
-    wsdlUrl = "http://"+System.getProperty("jboss.bind.address","localhost")+":8080/bizservices/AuditReview?wsdl";
+    wsdlUrl = "http://"+System.getProperty("jgroups.bind_addr","localhost")+":8080/bizservices/AuditReview?wsdl";
     kcontext.setVariable("wsdlUrl", wsdlUrl);
     System.out.println("prepSOAPcall() wsdlUrl = "+wsdlUrl);
 }]]></bpmn2:script>

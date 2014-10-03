@@ -58,9 +58,9 @@ policyString = jsonMapper.writeValueAsString(policy);
 kcontext.setVariable("policyString", policyString);
 System.out.println("prepRESTCall() policyString = "+policyString);
 
-// Use java.bind.address system property to set URL of auditReview REST resource
+// Use jgroups.bind_addr system property to set URL of auditReview REST resource
 // (which for this reference architecture is assumed to be co-located in same JVM)
-urlString = "http://"+System.getProperty("jboss.bind.address", "localhost")+":8080/bizservices/policy";
+urlString = "http://"+System.getProperty("jgroups.bind_addr", "localhost")+":8080/bizservices/policy";
 kcontext.setVariable("urlString", urlString);
 System.out.println("prepRESTcall() urlSting = "+urlString);
 ]]></bpmn2:script>
