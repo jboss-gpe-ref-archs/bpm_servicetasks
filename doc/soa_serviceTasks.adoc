@@ -2,6 +2,7 @@
 :toc2:
 :rhtlink: link:https://www.redhat.com[Red Hat]
 :bpmproduct: link:https://access.redhat.com/site/documentation/en-US/Red_Hat_JBoss_BPM_Suite/[Red Hat's BPM Suite 6 product]
+:mwlaboverviewsetup: link:http://people.redhat.com/jbride/labsCommon/setup.html[Middleware Lab Overview and Set-up]
 
 image::images/rhheader.png[width=900]
 
@@ -187,10 +188,8 @@ image::images/publishbpmslab.png[]
 . Log messages similar to the following should appear:
 +
 image::images/newbpmlogfile.png[]
+
 == Config and Deployment:  Local Environment
-If your interest is in the _spring_ServiceTask_ example, please follow the instructions found link:spring_serviceTask_instructions.adoc[here].
-If your interest is in the _async_ServiceTask_ example, please follow the instructions found link:async_serviceTask_instructions.adoc[here].
-Otherwise, for all other examples in this reference architecture, follow the next series of instructions.
 
 === local: Clone this reference architecture
 This reference architecture will be cloned both in your local computer as well as in your remote BPM Suite 6 Openshift environment.
@@ -219,7 +218,7 @@ For the purposes of the remainder of these instructions, this directory on your 
 Doing so will clone this `bpm_servicetasks` project to your local disk
 
 . In JBDS, switch to the `Project Explorer` panel and navigate to:  `File -> Import -> Maven -> Existing Maven Projects`
-. In the `Root Directory` field of the `Maven Projects` pop-up, navigate to the location on disk where the `bpm_servicetasks` project was just cloned to.
+. In the `Root Directory` field of the `Maven Projects` pop-up, navigate to the location on disk where this project was just cloned to and select `bpm_servicetasks/soa` .
 +
 image::images/import_mvn_project.png[]
 

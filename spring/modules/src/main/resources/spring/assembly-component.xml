@@ -4,7 +4,7 @@
     <files>
         <file>
             <source>src/main/resources/spring/module.xml</source>
-            <outputDirectory>/modules/system/layers/gpe/org/spring/main</outputDirectory>
+            <outputDirectory>/org/spring/main</outputDirectory>
             <filtered>true</filtered>
         </file>
     </files>
@@ -19,7 +19,7 @@
                 <include>org.springframework:spring-tx</include>
                 <include>org.springframework:spring-core</include>
             </includes>
-            <outputDirectory>/modules/system/layers/gpe/org/spring/main</outputDirectory>
+            <outputDirectory>/org/spring/main</outputDirectory>
             <outputFileNameMapping>${artifact.artifactId}-${spring.version}.${artifact.extension}</outputFileNameMapping>
         </dependencySet>
     </dependencySets>

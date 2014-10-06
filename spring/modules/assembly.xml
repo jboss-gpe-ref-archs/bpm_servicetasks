@@ -11,7 +11,7 @@
     <files>
         <file>
             <source>src/main/resources/README.txt</source>
-            <outputDirectory>/modules</outputDirectory>
+            <outputDirectory>/org/spring/main</outputDirectory>
             <filtered>false</filtered>
         </file>
     </files>
