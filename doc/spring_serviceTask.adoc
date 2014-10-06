@@ -247,7 +247,7 @@ This section documents the creation of these database objects using MySQL.
 . At the mysql command prompt, enter the following:
 +
 -----
-mysql> create table customer(id int8 not null, firstname varchar(255), lastname varchar(255), primary key (id));
+mysql> create table customer(id int(11) NOT NULL AUTO_INCREMENT, firstname varchar(255), lastname varchar(255), primary key (id));
 Query OK, 0 rows affected (0.01 sec)
 -----
 
@@ -309,7 +309,7 @@ It can be executed manually as follows:
 . Navigate to:  Process Management -> Process Definitions
 . Select the _Start_ icon of any of the _spring_servicetask.bpmn2_ process definition.
 . A form should appear with only a _play_ button to start that specific process.
-. Make sure your $JBOSS_HOME/standalone/log/server.log is being tailed and click this play button.
+. Make sure your `~/bpms/standalone/log/server.log` is being tailed and click this play button.
 
 === RESULTS:  spring_servicetask
 The _customer_ table of your application database should now include a record as follows:
@@ -320,9 +320,8 @@ bash-4.2$ mysql $OPENSHIFT_APP_NAME
 mysql> select * from customer;
  id |   firstname   | lastname 
 ----+---------------+----------
-  0 | Azra and Alex | Bride
+  1 | Azra and Alex | Bride
 (1 row)
 -----
 
 You now have configured and tested a custom workItemHandler that leverages the Spring framework to persist to an application database.
-

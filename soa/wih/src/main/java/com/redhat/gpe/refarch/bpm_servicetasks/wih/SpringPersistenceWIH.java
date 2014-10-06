@@ -37,10 +37,11 @@ public class SpringPersistenceWIH extends AbstractLogOrThrowWorkItemHandler {
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         try {
             getJdbcTemplate();
-            jdbcTemplate.update("INSERT INTO customer(firstname, lastname) values(?,?)", "Azra and Alex", "Bride");
+            Integer nextVal = (Integer)jdbcTemplate.queryForObject("select nextval('customerId')", Integer.class);
+            jdbcTemplate.update("INSERT INTO customer(id, firstname, lastname) values(?,?,?)", nextVal, "Azra and Alex", "Bride");
 
             RuleFlowProcessInstance pInstance = (RuleFlowProcessInstance)sessionObj.getProcessInstance(workItem.getProcessInstanceId());
-            log.info("executeWorkItem() just inserted record into customer table with pInstanceId = "+pInstance.getId());
+            log.info("executeWorkItem() just inserted record into customer table with id = "+nextVal+ " : pInstanceId = "+pInstance.getId());
             
             VariableScopeInstance vScopeInstance = (VariableScopeInstance) pInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
             Map<String, Object> variables = vScopeInstance.getVariables();
