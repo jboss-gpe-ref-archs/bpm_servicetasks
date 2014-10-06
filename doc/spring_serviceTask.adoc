@@ -191,12 +191,15 @@ The Spring libraries archived in a zip file and pushed to your BPM Suite 6 envir
 unzip $OPENSHIFT_DATA_DIR/persistence.service.modules.zip -d $OPENSHIFT_DATA_DIR/appModules
 -----
 
-=== local:  deploy the Spring workItemHandler
+=== BPM Suite 6:  deploy the Spring workItemHandler
 This reference architecture includes a Spring-based custom workItemHandler at:  $REF_ARCH_HOME/spring/wih/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.
+
+Take a minute to review the code.
+
+Deploy the SpringPersistenceWIH class as follows:
 
 . Using the `Remote System Explorer` perspective of JBDS, copy $REF_ARCH_HOME/spring/wih/target/spring.wih-1.0.jar
 . Paste into `<your.app>.apps-ose.opentlc.com -> Sftp Files -> My Home -> bpms -> standalone -> deployments -> WEB-INF -> lib
-
 
 === BPM Suite 6: Define Service Task mapping
 This reference architecture includes a BPMN process definition called:  _spring_servicetask_.
@@ -264,11 +267,11 @@ Use the following steps to clone this reference architecture in BPM Suite 6:
 
 image::images/clone_repo.png[]
 
-Enter _bpmservicetask_ as the value of the _repository name_.
+Enter _bpmservicetasks_ as the value of the _repository name_.
 The value of _Git URL_ is the URL to this reference architecture in github:
 
 -----
-https://github.com/jboss-gpe-ref-archs/bpm_servicetask.git
+https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
 -----
 
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
