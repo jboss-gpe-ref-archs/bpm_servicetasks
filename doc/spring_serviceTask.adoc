@@ -191,6 +191,25 @@ The Spring libraries archived in a zip file and pushed to your BPM Suite 6 envir
 unzip $OPENSHIFT_DATA_DIR/persistence.service.modules.zip -d $OPENSHIFT_DATA_DIR/appModules
 -----
 
+==== Define explicit dependency
+Now that the `org.spring` JBoss module (and corresponding libraries) have been deployed, the BPM Suite 6 business-central web archive needs to define an explicit dependency on the new JBoss Module.
+Do so as follows:
+
+. While still in the `Remote System Explorer` perspective of JBDS, open a ssh terminal to your remote BPM enabled OpenShift gear.
+. vi `~/bpms/standalone/deployments/business-central.war/WEB-INF/jboss-deployment-structure.xml`
+. scroll down toward the bottom of the file and enter a new explicit dependency as follows:
++
+-----
+<module name="org.spring" export="true" services="import" meta-inf="import"/>
+-----
++
+The modification should look similar to the following:
++
+image::images/explicitspringdep.png[]
+
+. save the change to `jboss-deployment-structure.xml` and exit.
+
+
 === BPM Suite 6:  deploy the Spring workItemHandler
 This reference architecture includes a Spring-based custom workItemHandler at:  $REF_ARCH_HOME/spring/wih/src/main/java/com/redhat/gpe/refarch/bpm_servicetasks/processtier/SpringPersistenceWIH.java.
 
