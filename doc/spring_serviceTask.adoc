@@ -270,8 +270,8 @@ Make the following changes to this copied datasource:
 . Bounce your remote BPM Suite 6 java run-time using the via the `OpenShift Explorer` plugin of JBDS.
 
 === BPM Suite 6: Clone this reference architecture
-This reference architecture includes a KIE project called: _processTier_ .
-The _processTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
+This reference architecture includes a KIE project called: _springProcessTier_ .
+The _springProcessTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
 
 Use the following steps to clone this reference architecture in BPM Suite 6:
 
@@ -296,9 +296,16 @@ https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
 
 
-=== BPM Suite 6:  Build and Deploy _processTier_ project
-. Build and Deploy the _processTier_ project by executing the following:
-.. Authoring -> Project Authoring -> Tools -> Project Editor -> Build and Deploy
+=== BPM Suite 6:  Build and Deploy _springProcessTier_ project
+Build and Deploy the _springProcessTier_ project by executing the following:
+
+. Navigate to `Authoring -> Project Authoring`
+. In the `Project Explorer` panel, ensure that `gpe -> bpmservicetasks -> springProcessTier` is selected
++
+image::images/springProjExplorer.png[]
+
+. Navigate to `Authoring -> Project Authoring -> Tools -> Project Editor`
+. In the `Project Editor` panel, click `Build and Deploy`
 . If interested, verify deployment:
 .. Deploy -> Deployments
 

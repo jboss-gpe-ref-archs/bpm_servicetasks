@@ -238,9 +238,9 @@ To build the various sub-projects, execute the following:
 image::images/maven_build_success.png[]
 
 === BPM Suite 6:  Add domain-model jar to classpath of business-central
-The _processTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
+The _soaProcessTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
 
-One approach toward making this domain model available to the _processTier_ KIE project is to manually upload libraries to the BPM Suite 6  _Artifact Repository_ and then define dependencies in the KIE project to those newly  uploaded libraries.
+One approach toward making this domain model available to the _soaProcessTier_ KIE project is to manually upload libraries to the BPM Suite 6  _Artifact Repository_ and then define dependencies in the KIE project to those newly  uploaded libraries.
 As of BPM Suite 6.0.2, this approach however causes classloader inconsistencies when invoking SOAP services with complex types.
 When using the SOAP based WorkItemHandlers, it is not sufficient to make the domain model jar visible to the KIE project only.
 Instead, the domain model jar needs to be made visible to the entire classpath of the BPM Suite business-central web artifact.
@@ -264,7 +264,7 @@ image::images/domainjar.png[]
 image::images/pastedomainjarintobizcentral.png[]
 
 === BPM Suite 6:  Discussion regarding domain models
-In this reference architecture, a single java library with domain model classes is shared between the _processTier_ and the _servicesTier_.
+In this reference architecture, a single java library with domain model classes is shared between the _soaProcessTier_ and the _servicesTier_.
 The source code and build configuration for these domain model classes reside in $REF_ARCH_HOME/domain.
 The previous section discussed the requirement to add this external domain model library to the business-central.war/WEB-INF/lib directory.
 
@@ -272,11 +272,11 @@ As an alternative, BPM Suite 6 includes a _Data Modeler_ tool.
 The Data Modeler tool allows for the creation of domain model classes to be used for your BPM Suite 6 KIE projects.
 Specifically, these Data Modeler generated domain-model classes are useful at design-time to facilate creation of rules, BPMN2 process definitions, forms, etc.
 These domain-model classes are also useful at runtime to facilitate the execution of rules and process instances included in a KIE project.
-*In summary, the scope of a Data Modeler generated _processTier_ domain model is specific to KIE workbench tooling and KIE project execution.*
+*In summary, the scope of a Data Modeler generated _soaProcessTier_ domain model is specific to KIE workbench tooling and KIE project execution.*
 
-*This _processTier_ domain model should generally not be used outside the scope of the KIE workbench and KIE project execution.*
+*This _soaProcessTier_ domain model should generally not be used outside the scope of the KIE workbench and KIE project execution.*
 *When integration between a process instance and SOA services is needed, it is a best practice to define an additional _integration_ domain model.*
-Transformations between _integration_ and _processTier_ domain models are common:
+Transformations between _integration_ and _soaProcessTier_ domain models are common:
 
 . *inbound through BPM Suite 6 Execution Server:* 
 A BPMN2 process definition should conduct as its first node the following transformation:  _integrationDomain_ -> _processTierDomain_ 
@@ -305,8 +305,8 @@ image::images/customservicetasks.png[]
 . Switch back to the `OpenShift Explorer` panel in JBDS and restart the `bpmsapp` application.
 
 === BPM Suite 6:  Clone this reference architecture
-This reference architecture includes a KIE project called: _processTier_ .
-The _processTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
+This reference architecture includes a KIE project called: _soaProcessTier_ .
+The _soaProcessTier_ project includes several BPMN2 process definitions that show-case invocation of remote SOA services via standard transports.
 
 Use the following steps to clone this reference architecture in BPM Suite 6:
 
@@ -333,12 +333,19 @@ https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
 
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
 
-=== BPM Suite 6:  Build and Deploy _processTier_ project
-. Build and Deploy the _processTier_ project by executing the following:
-.. Authoring -> Project Authoring -> Tools -> Project Editor -> Build and Deploy
+=== BPM Suite 6:  Build and Deploy _soaProcessTier_ project
+Build and Deploy the _soaProcessTier_ project by executing the following:
+
+. Navigate to `Authoring -> Project Authoring`
+. In the `Project Explorer` panel, ensure that `gpe -> bpmservicetasks -> soaProcessTier` is selected
++
+image::images/soaProjExplorer.png[]
+
+. Navigate to `Authoring -> Project Authoring -> Tools -> Project Editor`
+. In the `Project Editor` panel, click `Build and Deploy`
 . If interested, verify deployment:
 .. Deploy -> Deployments
-
++
 image::images/deployment.png[]
 
 === BPM Suite 6:  Upload and Enable SOA Services
