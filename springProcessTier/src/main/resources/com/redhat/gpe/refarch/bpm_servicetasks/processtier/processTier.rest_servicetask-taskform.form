@@ -1,0 +1,8 @@
+
+<form id="307285550">
+<property name="subject" value=""/>
+<property name="name" value="processTier.rest_servicetask-taskform.form"/>
+<property name="displayMode" value="default"/>
+<property name="status" value="0"/>
+<dataHolder inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_servicetasks.domain.Policy" id="policy"/>
+</form>

@@ -1,0 +1,17 @@
+
+<form id="9812640">
+<property name="subject" value=""/>
+<property name="name" value="processTier.soap_servicetask-taskform.form"/>
+<property name="displayMode" value="default"/>
+<property name="status" value="0"/>
+<field position="0" name="useWS" type="CheckBox" id="1642819727">
+<property name="fieldRequired" value="false"/>
+<property name="label" value="quot;enquot;,quot;useWS (useWS)quot;"/>
+<property name="inputBinding" value=""/>
+<property name="outputBinding" value="useWS"/>
+<property name="fieldClass" value="java.lang.Boolean"/>
+</field>
+<dataHolder supportedType="className" inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_servicetasks.domain.Policy" id="policy"/>
+<dataHolder inputId="" name="#B29FE4" type="basicType" outId="useWS" value="java.lang.Boolean" id="useWS"/>
+<dataHolder inputId="" name="#A7E690" type="basicType" outId="wsdlUrl" value="java.lang.String" id="wsdlUrl"/>
+</form>
