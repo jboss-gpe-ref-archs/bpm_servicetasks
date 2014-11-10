@@ -5,8 +5,23 @@
   <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
   <artifactId>soaProcessTier</artifactId>
   <version>1.0</version>
-  <packaging>jar</packaging>
+  <packaging>kjar</packaging>
   <name>soaProcessTier</name>
   <dependencies>
+    <dependency>
+      <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
+      <artifactId>domain</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.kie</groupId>
+        <artifactId>kie-maven-plugin</artifactId>
+        <version>6.0.2-redhat-6</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
