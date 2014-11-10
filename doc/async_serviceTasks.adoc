@@ -1,0 +1,15 @@
+:data-uri:
+:toc2:
+:rhtlink: link:https://www.redhat.com[Red Hat]
+:bpmproduct: link:https://access.redhat.com/site/documentation/en-US/Red_Hat_JBoss_BPM_Suite/[Red Hat's BPM Suite 6 product]
+:mwlaboverviewsetup: link:http://people.redhat.com/jbride/labsCommon/setup.html[Middleware Lab Overview and Set-up]
+
+image::images/rhheader.png[width=900]
+
+:numbered!:
+[abstract]
+== Red Hat GPE Reference Architecture:  Async WorkItemHandler
+
+:numbered:
+
+== Overview

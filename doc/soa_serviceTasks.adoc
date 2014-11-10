@@ -40,6 +40,8 @@ An Apache CXF Dynamic Dispatch client is capable of invoking remote SOAP service
 In order for those complex types to be marshalled into XML, they need to be on the Java classpath of BPM Suite 6.
 The complex type classes must *not* be in the Kie project .... otherwise, ClassCastExceptions will occur.
 
+To-Do:  Modify as per https://access.redhat.com/solutions/800663
+
 ==== WSDLs and Task parameters
 The WebService and BPMN2 Service Tasks expect several parameters passed to.
 The values of those parameters in the `soap_servicetask` BPMN2 definition are as follows:
