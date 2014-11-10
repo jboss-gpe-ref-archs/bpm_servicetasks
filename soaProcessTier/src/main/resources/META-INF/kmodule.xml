@@ -1,5 +1,10 @@
 <kmodule xmlns="http://jboss.org/kie/6.0.0/kmodule" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <kbase name="bpmdomainkbase" default="true" eventProcessingMode="cloud" equalsBehavior="equality" packages="*">
-    <ksession name="bpmdomainksession" type="stateful" default="true" clockType="realtime" scope="javax.enterprise.context.ApplicationScoped"/>
+    <ksession name="bpmdomainksession" type="stateful" default="true" clockType="realtime" scope="javax.enterprise.context.ApplicationScoped">
+        <workItemHandlers>
+            <workItemHandler type="new org.jbpm.process.workitem.webservice.WebServiceWorkItemHandler(ksession, runtimeManager.getEnvironment().getClassLoader())" name="WebService"/>
+            <workItemHandler type="new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession, runtimeManager.getEnvironment().getClassLoader())" name="Service Task"/>
+        </workItemHandlers>
+    </ksession>
   </kbase>
 </kmodule>

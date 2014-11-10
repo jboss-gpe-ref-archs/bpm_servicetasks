@@ -37,10 +37,19 @@ Included in this reference architecture is a BPMN2 process definition called `so
 ==== CXF Dynamic Dispath : complex types
 Both of BPM Suite 6 SOAP-based WorkItemHandlers introduced previously leverage Apache CXF Dynamic Dispatch to invoke remote SOAP services.
 An Apache CXF Dynamic Dispatch client is capable of invoking remote SOAP services with JAXB annotated complex types.
-In order for those complex types to be marshalled into XML, they need to be on the Java classpath of BPM Suite 6.
-The complex type classes must *not* be in the Kie project .... otherwise, ClassCastExceptions will occur.
+In order for those complex types to be marshalled into XML, they need to be on the classpath of the BPM Suite 6 Execution Server.
+There are two options to do so:
 
-To-Do:  Modify as per https://access.redhat.com/solutions/800663
+. *Add complex types to Java classpath of business-central web archive*
++
+This approach is straight-forward if you have defined a `processTier` domain model and a separate `integration tier` domain model.
+Your `integration tier` domain model would be added to the Java classpath of the BPM Suite 6 business-central web archive.
+Your BPMN2 process definition would include additional nodes that transform between the `processTier` and `integration tier` domain models.
+
+. *Register complex types and SOAP workItemHandler(s) to KIE project*
++
+This is the approach to use if your solution defines only one domain model that is leveraged both in the `process tier` and is also used when invoking remote SOAP services.
+In this reference architecture, it is this approach that will be utilized.
 
 ==== WSDLs and Task parameters
 The WebService and BPMN2 Service Tasks expect several parameters passed to.
