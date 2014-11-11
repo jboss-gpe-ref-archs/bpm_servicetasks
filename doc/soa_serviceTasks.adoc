@@ -248,72 +248,28 @@ To build the various sub-projects, execute the following:
 +
 image::images/maven_build_success.png[]
 
-=== BPM Suite 6:  Add domain-model jar to classpath of business-central
-The _soaProcessTier_ KIE project references a domain model that is included in the $REF_ARCH_HOME/domain directory of this reference architecture.
-
-One approach toward making this domain model available to the _soaProcessTier_ KIE project is to manually upload libraries to the BPM Suite 6  _Artifact Repository_ and then define dependencies in the KIE project to those newly  uploaded libraries.
-As of BPM Suite 6.0.2, this approach however causes classloader inconsistencies when invoking SOAP services with complex types.
-When using the SOAP based WorkItemHandlers, it is not sufficient to make the domain model jar visible to the KIE project only.
-Instead, the domain model jar needs to be made visible to the entire classpath of the BPM Suite business-central web artifact.
-
-Since this reference architecture does show-case use of invoking a remote SOAP service that requires a complex-type in its payload, the domain model jar will be made visible to the classpath of the business-central web archive. 
-JBoss EAP 6 allows for two different options for adding the libraries to the classpath of a web artifact (in this case:  business-central.war):
-
-. Deploy the domain model jar as a static shared JBoss module and enter in an explicit dependency on this new JBoss module in business-central.war/WEB-INF/jboss-deployment-structure.xml
-. Add the domain model jar to: business-central.war/WEB-INF/lib
-
-For the purpose of this reference architecture, the latter approach will be used.
-To do so, execute the following:
-
-. In the `Project Explorer` panel of the `JBOSS` perspective of JBDS, right-click on the `domain/target/bpm_rulesMgmt_domain.jar` in `Project Explorer` and select `Copy`.
-+
-image::images/domainjar.png[]
-
-.. In the `Remote System Explorer` perspective of JBDS, navigate to `bpmsapp-<your domain>.apps.ose.opentlc.com -> Sftp Files -> My Home -> bpms -> standalone -> deployments -> business-central.war -> WEB-INF -> lib`
-.. Right-click and select `Paste`
-+
-image::images/pastedomainjarintobizcentral.png[]
-
-=== BPM Suite 6:  Discussion regarding domain models
-In this reference architecture, a single java library with domain model classes is shared between the _soaProcessTier_ and the _servicesTier_.
-The source code and build configuration for these domain model classes reside in $REF_ARCH_HOME/domain.
-The previous section discussed the requirement to add this external domain model library to the business-central.war/WEB-INF/lib directory.
-
-As an alternative, BPM Suite 6 includes a _Data Modeler_ tool.
-The Data Modeler tool allows for the creation of domain model classes to be used for your BPM Suite 6 KIE projects.
-Specifically, these Data Modeler generated domain-model classes are useful at design-time to facilate creation of rules, BPMN2 process definitions, forms, etc.
-These domain-model classes are also useful at runtime to facilitate the execution of rules and process instances included in a KIE project.
-*In summary, the scope of a Data Modeler generated _soaProcessTier_ domain model is specific to KIE workbench tooling and KIE project execution.*
-
-*This _soaProcessTier_ domain model should generally not be used outside the scope of the KIE workbench and KIE project execution.*
-*When integration between a process instance and SOA services is needed, it is a best practice to define an additional _integration_ domain model.*
-Transformations between _integration_ and _soaProcessTier_ domain models are common:
-
-. *inbound through BPM Suite 6 Execution Server:* 
-A BPMN2 process definition should conduct as its first node the following transformation:  _integrationDomain_ -> _processTierDomain_ 
-. *outbound through Service Tasks:*
-A BPMN2 process definition should conduct the following transformtion just prior to a service task node:  _processTierDomain_ -> _integrationDomain_ 
-
 === BPM Suite 6:  Define Service Task mapping
 The various process definitions included in this reference architecture utilize Service Tasks to invoke remote SOA services.
 The name of these Service Tasks needs to be mapped to a jBPM WorkItemHandler implementation.
 This mapping subsequently needs to be registered with the process engine.
-The mapping between Service Task name and its workItemHandler implementation can be defined in a pre-existing BPM Suite 6 configuration file.
-This can be accomplished as follows:
+The mapping between Service Task name and its workItemHandler implementation is typically done in the following BPM Suite 6 configuration file :
+-----
+~/bpms/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf
+-----
+
+In the case of the `WebService` and `Service Task` tasks, these mappings can *not* be registered in this configuration file due to ClassLoader issues when (un)marshalling the complex domain model classes used to invoke the remote SOAP service.
+Instead, the `WebService` Service Task should intentionally be removed from this configuration file as follows:
 
 . In the `Remote System Explorer` perspective, ssh into the `bpmsapp` gear.
 . execute: vi `~/bpms/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf`
-.. notice the existing mappings for various base-product Service Tasks (Log, WebService, Rest)
-.. add a comma to the end of the last service task mapping and then append the following:
-+
------
-"Service Task": new org.jbpm.process.workitem.bpmn2.ServiceTaskHandler(ksession)
------
+.. Delete the line related to the `WebService` mapping such that only the `Log` and `Rest` entries exist:
 +
 image::images/customservicetasks.png[]
 
 . Save the change and quit
 . Switch back to the `OpenShift Explorer` panel in JBDS and restart the `bpmsapp` application.
+
+Later in this reference architecture we'll see how the SOAP related Service Tasks are registed such that they properly loaded into the classpath of the KIE project.
 
 === BPM Suite 6:  Clone this reference architecture
 This reference architecture includes a KIE project called: _soaProcessTier_ .
@@ -358,6 +314,14 @@ image::images/soaProjExplorer.png[]
 .. Deploy -> Deployments
 +
 image::images/deployment.png[]
+
+. Let's now via the registration of the SOAP related Service Tasks such that they are properly loaded on the classpath of the KIE project
+.. In the Search box of the BPM Console, search for: `kmodule.xml`
+.. Open the most recent entry from the search result:
+.. Notice the inclusion of both the `WebService` and `Service Task` workItemHandlers
+.. Also, notice how the workItemHandlers are instantiated using the classloader of the jbpm `runtimeManager` 
++
+image::images/kmodule.png[]
 
 === BPM Suite 6:  Upload and Enable SOA Services
 In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via standard protocols:  REST & SOAP.
