@@ -34,23 +34,6 @@ BPM Suite 6 includes two out-of-the-box implementations to invoke remote SOAP se
 
 Included in this reference architecture is a BPMN2 process definition called `soap_servicetask` that demonstrates use of both SOAP Service Tasks.
 
-==== CXF Dynamic Dispath : complex types
-Both of BPM Suite 6 SOAP-based WorkItemHandlers introduced previously leverage Apache CXF Dynamic Dispatch to invoke remote SOAP services.
-An Apache CXF Dynamic Dispatch client is capable of invoking remote SOAP services with JAXB annotated complex types.
-In order for those complex types to be marshalled into XML, they need to be on the classpath of the BPM Suite 6 Execution Server.
-There are two options to do so:
-
-. *Add complex types to Java classpath of business-central web archive*
-+
-This approach is straight-forward if you have defined a `processTier` domain model and a separate `integration tier` domain model.
-Your `integration tier` domain model would be added to the Java classpath of the BPM Suite 6 business-central web archive.
-Your BPMN2 process definition would include additional nodes that transform between the `processTier` and `integration tier` domain models.
-
-. *Register complex types and SOAP workItemHandler(s) to KIE project*
-+
-This is the approach to use if your solution defines only one domain model that is leveraged both in the `process tier` and is also used when invoking remote SOAP services.
-In this reference architecture, it is this approach that will be utilized.
-
 ==== WSDLs and Task parameters
 The WebService and BPMN2 Service Tasks expect several parameters passed to.
 The values of those parameters in the `soap_servicetask` BPMN2 definition are as follows:
@@ -84,12 +67,28 @@ SOAP operation to invoke
 +
 SOAP service interface name
 
+==== CXF Dynamic Dispath : complex types
+Both of BPM Suite 6 SOAP-based WorkItemHandlers introduced previously leverage Apache CXF Dynamic Dispatch to invoke remote SOAP services.
+An Apache CXF Dynamic Dispatch client is capable of invoking remote SOAP services with JAXB annotated complex types.
+In order for those complex types to be (un)marshalled into XML by Apache CXF, the domain model and CXF need to be managed by the same Java classloader.
+There are two potential approaches:
+
+. *Add complex types to Java classpath of business-central web archive*
++
+This approach is straight-forward if you have defined a `processTier` domain model and a separate `integration tier` domain model.
+Your BPMN2 process definition would include additional nodes that transform between the `processTier` and `integration tier` domain models.
+Its the `integration tier` domain model that would be (un)marshalled by Apache CXF.
+Subsequently, both `integration tier` domain model and the BPM Suite 6 SOAP service tasks would operate from the regular Java classpath of the business-central web archive.In regards to the SOAP based Service Tasks, they are loaded by the Java classloader of the business-central web archive by default.
+In regards to the `integration tier` domain model, it could be added to the classpath of business-central simply by dropping it in the WEB-INF/lib directory.
+This reference architecture does not make use of an `integration tier` domain model and thus this approach is not demonstrated.
+
+. *Register complex types and SOAP workItemHandler(s) to KIE project*
++
+This is the approach to use if your solution defines only one domain model that is leveraged both in the `process tier` and is also used when invoking remote SOAP services.
+Both the single domain model and the BPM Suite 6 SOAP service tasks are managed by the Java classloader of the KIE project (as opposed to being managed by the Java classloader of the business-central web archive).
+In this reference architecture, only a single domain model is defined and thus it is this approach that will be utilized.
 
 ==== Outstanding issues
-
-* classpath problems with CXF Dynamic Dispatch
-** https://mojo.redhat.com/docs/DOC-942546
-
 
 === REST Service Task 
 
@@ -248,7 +247,7 @@ To build the various sub-projects, execute the following:
 +
 image::images/maven_build_success.png[]
 
-=== BPM Suite 6:  Define Service Task mapping
+=== BPM Suite 6:  Modify Service Task mappings
 The various process definitions included in this reference architecture utilize Service Tasks to invoke remote SOA services.
 The name of these Service Tasks needs to be mapped to a jBPM WorkItemHandler implementation.
 This mapping subsequently needs to be registered with the process engine.
@@ -257,8 +256,16 @@ The mapping between Service Task name and its workItemHandler implementation is 
 ~/bpms/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf
 -----
 
-In the case of the `WebService` and `Service Task` tasks, these mappings can *not* be registered in this configuration file due to ClassLoader issues when (un)marshalling the complex domain model classes used to invoke the remote SOAP service.
-Instead, the `WebService` Service Task should intentionally be removed from this configuration file as follows:
+The out-of-the-box `CustomWorkItemHandlers.conf` includes mappings for the `Log`, `Human Task`, `Rest` and SOAP `WebService` service tasks.
+When Service Tasks are registered in this default `CustomWorkItemHandlers.conf` configuration file, they are managed at runtime by the classloader of the business-central web archive.
+
+In regards to the `Rest` service task mapping and registration, it is fine where it is in the `CustomWorkItemHandlers.conf` configuration file.
+
+In regards to the `WebService` and `Service Task` tasks, we will remove their mappings from this `CustomWorkItemHandlers.conf` configuration file for the purposes of this reference architecture.
+Instead, we will use an alternative approach where our single domain model and our SOAP based service tasks are both managed by the classloader of our KIE project (rather than the classloader of the business-central web archive).
+Doing so will prevent incompatible classloader issues when Apache CXF attempts to (un)marshall our complex domain model classes used to invoke our remote SOAP services.
+
+The `WebService` Service Task can intentionally be removed from the stock `CustomWorkItemHandlers.conf` file as follows:
 
 . In the `Remote System Explorer` perspective, ssh into the `bpmsapp` gear.
 . execute: vi `~/bpms/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf`
@@ -269,7 +276,39 @@ image::images/customservicetasks.png[]
 . Save the change and quit
 . Switch back to the `OpenShift Explorer` panel in JBDS and restart the `bpmsapp` application.
 
-Later in this reference architecture we'll see how the SOAP related Service Tasks are registed such that they properly loaded into the classpath of the KIE project.
+Later in this reference architecture we'll see how both the SOAP related Service Tasks and our complex domain model are registed by the classloader of our KIE project.
+
+=== BPM Suite 6:  Add domain model to `Artifact Repository`
+This reference architecture includes a KIE project called: _soaProcessTier_ .
+In your environment, open up the following file: `bpm_servicetasks/soaProcessTier/`.
+Notice that it includes the following dependencies on the single complex domain model used in this reference architecture:
+ 
+-----
+     10   <dependencies>
+     11     <dependency>
+     12       <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
+     13       <artifactId>domain</artifactId>
+     14       <version>1.0</version>
+     15     </dependency>
+     16   </dependencies>
+-----
+
+Of relevance to this reference architecture is that at runtime this KIE project dependency will be managed by the classloader of the KIE project (and not the classloader of the business-central web archive).
+This dependency now satisfies half of our requirement that both the complex domain model classes and the SOAP related Service Tasks be managed by the KIE project classloader.
+Later in this reference architecture, we'll investigate how the second half of our requirement (SOAP related Service Tasks managed by the KIE project classloader) is met.
+
+The `soaProcessTier` KIE project included in this reference architecture will soon be cloned and imported in our remote BPM Console.
+Prior to cloning and importing however, our `com.redhat.gpe.refarch.bpm_servicetasks:domain:1.0` library should already be available via Maven to the KIE project.
+This can be accomplished via by uploading the complex domain model classes to the BPM Suite 6 `Artifact Repository` as follows:
+
+. Point your browser to the BPM Console of your remote BPM Suite 6 environment and authenticate in (`jboss` / `brms`).
+. Navigate to `Authoring -> Artifact Repository`
+. Click the `Upload' button
+. In the `Artifact upload` pop-up, select `Choose File` and navigate in your local file system to `$REF_ARCH_HOME/soa/domain/target/domain-1.0.jar`
+. Click the `Upload` button.
+. The artifact repository should now include a single entry as follows:
+
+image::images/artifactrepo.png[]
 
 === BPM Suite 6:  Clone this reference architecture
 This reference architecture includes a KIE project called: _soaProcessTier_ .
@@ -315,16 +354,34 @@ image::images/soaProjExplorer.png[]
 +
 image::images/deployment.png[]
 
-. Let's now via the registration of the SOAP related Service Tasks such that they are properly loaded on the classpath of the KIE project
+=== BPM Suite 6:  View SOAP Service Task registration with KIE project
+
+This reference architecture has mentioned the selection to create a single complex domain model used in the following:
+
+. `bpm process tier`
++
+Our single complex domain model classes are referenced as process and task variables in our BPMN2 definitions
+
+.  `SOA integration tier`
++
+Our single complex domain model classes are also used to invoke remote SOAP services.
+
+It has been mentioned that to do so, both complex domain model and SOAP service tasks need to be managed by the classloader of the KIE project and not the classloader of the business-central web archive.
+In previous sections of this reference architecture, we've seen how the complex domain model is configured such that it is managed by the classloader of the KIE project.
+
+Let's now view the registration of the SOAP related Service Tasks such that they too are managed by the classloader of the KIE project:
+
 .. In the Search box of the BPM Console, search for: `kmodule.xml`
 .. Open the most recent entry from the search result:
 .. Notice the inclusion of both the `WebService` and `Service Task` workItemHandlers
-.. Also, notice how the workItemHandlers are instantiated using the classloader of the jbpm `runtimeManager` 
 +
 image::images/kmodule.png[]
 
-=== BPM Suite 6:  Upload and Enable SOA Services
-In the $REF_ARCH_HOME/serviceTier directory are various services that when deployed will be exposed via standard protocols:  REST & SOAP.
+.. Also, notice how the workItemHandlers are instantiated using a constructor where the classloader to be used is that of the jbpm `runtimeManager` of the KIE project
+
+=== BPM Suite 6:  Deploy  SOA Services
+In the $REF_ARCH_HOME/serviceTier directory of this reference architecture are various services that when deployed will be exposed via standard protocols:  REST & SOAP.
+
 These services are implemented utilizing stock JEE functionality provided by the underlying JBoss Enterprise Application Platform.
 In this reference architecture, these SOA services are invoked by the corresponding BPM _Service Tasks_ used in the process definitions included in the _processTier_ KIE project.
 Upload and enable these services to your remote JBoss EAP environment via the following procedure:
