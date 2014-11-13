@@ -78,7 +78,8 @@ There are two potential approaches:
 This approach is straight-forward if you have defined a `processTier` domain model and a separate `integration tier` domain model.
 Your BPMN2 process definition would include additional nodes that transform between the `processTier` and `integration tier` domain models.
 Its the `integration tier` domain model that would be (un)marshalled by Apache CXF.
-Subsequently, both `integration tier` domain model and the BPM Suite 6 SOAP service tasks would operate from the regular Java classpath of the business-central web archive.In regards to the SOAP based Service Tasks, they are loaded by the Java classloader of the business-central web archive by default.
+Subsequently, both `integration tier` domain model and the BPM Suite 6 SOAP service tasks would operate from the regular Java classpath of the business-central web archive.
+In regards to the SOAP based Service Tasks, they are loaded by the Java classloader of the business-central web archive by default.
 In regards to the `integration tier` domain model, it could be added to the classpath of business-central simply by dropping it in the WEB-INF/lib directory.
 This reference architecture does not make use of an `integration tier` domain model and thus this approach is not demonstrated.
 
@@ -259,13 +260,13 @@ The mapping between Service Task name and its workItemHandler implementation is 
 The out-of-the-box `CustomWorkItemHandlers.conf` includes mappings for the `Log`, `Human Task`, `Rest` and SOAP `WebService` service tasks.
 When Service Tasks are registered in this default `CustomWorkItemHandlers.conf` configuration file, they are managed at runtime by the classloader of the business-central web archive.
 
-In regards to the `Rest` service task mapping and registration, it is fine where it is in the `CustomWorkItemHandlers.conf` configuration file.
+In regards to the `Rest` service task mapping and registration, it is fine where it is in the existing `CustomWorkItemHandlers.conf`.
 
-In regards to the `WebService` and `Service Task` tasks, we will remove their mappings from this `CustomWorkItemHandlers.conf` configuration file for the purposes of this reference architecture.
-Instead, we will use an alternative approach where our single domain model and our SOAP based service tasks are both managed by the classloader of our KIE project (rather than the classloader of the business-central web archive).
-Doing so will prevent incompatible classloader issues when Apache CXF attempts to (un)marshall our complex domain model classes used to invoke our remote SOAP services.
+In regards to the `WebService` and `Service Task` tasks, we will remove their mappings from this `CustomWorkItemHandlers.conf` and add the mappings to the `ksession.xml` of our KIE project.
+Doing so will ensure that our single domain model and our SOAP based service tasks are both managed by the classloader of our KIE project (rather than the classloader of the business-central web archive).
+This will prevent incompatible classloader issues when Apache CXF attempts to (un)marshall our complex domain model classes used to invoke our remote SOAP services.
 
-The `WebService` Service Task can intentionally be removed from the stock `CustomWorkItemHandlers.conf` file as follows:
+The `WebService` Service Task can be removed from the stock `CustomWorkItemHandlers.conf` file as follows:
 
 . In the `Remote System Explorer` perspective, ssh into the `bpmsapp` gear.
 . execute: vi `~/bpms/standalone/deployments/business-central.war/WEB-INF/classes/META-INF/CustomWorkItemHandlers.conf`
