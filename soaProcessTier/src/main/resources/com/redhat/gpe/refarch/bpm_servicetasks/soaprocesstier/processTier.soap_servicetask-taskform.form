@@ -1,0 +1,19 @@
+
+<form id="1946475006">
+<property name="name" value="processTier.soap_servicetask-taskform.form"/>
+<property name="displayMode" value="default"/>
+<property name="status" value="0"/>
+<field position="0" name="useWS" type="CheckBox" id="1372293872">
+<property name="fieldRequired" value="false"/>
+<property name="label" value="quot;SSClassquot;,quot;quot;quot;SSStylequot;,quot;quot;quot;caquot;,quot;quot;quot;dequot;,quot;quot;quot;enquot;,quot;useWS (use WebService WIH.  If not checked, will use ServiceTask WIH)quot;quot;esquot;,quot;quot;quot;frquot;,quot;quot;quot;jaquot;,quot;quot;quot;ptquot;,quot;quot;quot;zhquot;,quot;quot;"/>
+<property name="errorMessage" value="quot;caquot;,quot;quot;quot;dequot;,quot;quot;quot;enquot;,quot;quot;quot;esquot;,quot;quot;quot;frquot;,quot;quot;quot;jaquot;,quot;quot;quot;ptquot;,quot;quot;quot;zhquot;,quot;quot;"/>
+<property name="title" value="quot;caquot;,quot;quot;quot;dequot;,quot;quot;quot;enquot;,quot;If checked, WebService WorkItemHandler is used.  If not checked, then ServiceTask WorkItemHandler is usedquot;quot;esquot;,quot;quot;quot;frquot;,quot;quot;quot;jaquot;,quot;quot;quot;ptquot;,quot;quot;quot;zhquot;,quot;quot;"/>
+<property name="readonly" value="false"/>
+<property name="outputBinding" value="useWS"/>
+<property name="fieldClass" value="java.lang.Boolean"/>
+</field>
+<dataHolder supportedType="className" inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_servicetasks.soa.domain.Policy" id="policy"/>
+<dataHolder inputId="" name="#B29FE4" type="basicType" outId="useWS" value="java.lang.Boolean" id="useWS"/>
+<dataHolder inputId="" name="#9BCAFA" type="className" outId="wsError" value="org.jbpm.bpmn2.handler.WorkItemHandlerRuntimeException" id="wsError"/>
+<dataHolder inputId="" name="#A7E690" type="basicType" outId="wsdlUrl" value="java.lang.String" id="wsdlUrl"/>
+</form>

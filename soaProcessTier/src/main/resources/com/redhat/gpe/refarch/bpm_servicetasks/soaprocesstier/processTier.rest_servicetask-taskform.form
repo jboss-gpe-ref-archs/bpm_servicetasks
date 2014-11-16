@@ -1,0 +1,10 @@
+
+<form id="2080031388">
+<property name="name" value="processTier.rest_servicetask-taskform.form"/>
+<property name="displayMode" value="default"/>
+<property name="status" value="0"/>
+<dataHolder supportedType="className" inputId="" name="#0000A0" type="dataModelerEntry" outId="policy" value="com.redhat.gpe.refarch.bpm_servicetasks.soa.domain.Policy" id="policy"/>
+<dataHolder inputId="" name="#FF54A7" type="basicType" outId="policyString" value="java.lang.String" id="policyString"/>
+<dataHolder inputId="" name="#9BCAFA" type="className" outId="restError" value="org.jbpm.bpmn2.handler.WorkItemHandlerRuntimeException" id="restError"/>
+<dataHolder inputId="" name="#A7E690" type="basicType" outId="urlString" value="java.lang.String" id="urlString"/>
+</form>
