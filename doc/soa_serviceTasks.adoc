@@ -281,13 +281,13 @@ Later in this reference architecture we'll see how both the SOAP related Service
 
 === BPM Suite 6:  Add domain model to `Artifact Repository`
 This reference architecture includes a KIE project called: _soaProcessTier_ .
-In your environment, open up the following file: `bpm_servicetasks/soaProcessTier/`.
+In your environment, open up the following file: `bpm_servicetasks/soaProcessTier/pom.xml`.
 Notice that it includes the following dependencies on the single complex domain model used in this reference architecture:
  
 -----
      10   <dependencies>
      11     <dependency>
-     12       <groupId>com.redhat.gpe.refarch.bpm_servicetasks</groupId>
+     12       <groupId>com.redhat.gpe.refarch.bpm_servicetasks.soa</groupId>
      13       <artifactId>domain</artifactId>
      14       <version>1.0</version>
      15     </dependency>
@@ -328,17 +328,24 @@ The userId to use is:  `jboss`  and the password to use is:  `brms`
 . Clone this fsw_bpms_integration repository in BPM Suite 6
 .. Select `Repositories` -> `Clone Repository` .  
 .. Populate the _Clone Repository_ box as follows and then click _Clone_ :
-
++
 image::images/clone_repo.png[]
-
++
 Enter _bpmservicetask_ as the value of the _repository name_.  
 The value of _Git URL_ is the URL to this reference architecture in github:
-
++
 -----
 https://github.com/jboss-gpe-ref-archs/bpm_servicetasks.git
 -----
-
++
 Once successfully cloned, BPM Suite 6 will pop-up a new dialog box with the message:  _The repository is cloned successfully_
+
+. While still in the `Authoring -> Administration` section, navigate to `Repositories -> List`
+. The `bpmservicetasks` repo should appear.
+. Switch to the `6.1` branch by selecting that option from the drop down and clicking `Update` 
++
+image::images/changebranch.png[]
+
 
 === BPM Suite 6:  Build and Deploy _soaProcessTier_ project
 Build and Deploy the _soaProcessTier_ project by executing the following:
