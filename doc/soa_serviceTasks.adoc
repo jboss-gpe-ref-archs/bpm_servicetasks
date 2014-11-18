@@ -89,8 +89,6 @@ This is the approach to use if your solution defines only one domain model that 
 Both the single domain model and the BPM Suite 6 SOAP service tasks are managed by the Java classloader of the KIE project (as opposed to being managed by the Java classloader of the business-central web archive).
 In this reference architecture, only a single domain model is defined and thus it is this approach that will be utilized.
 
-==== Outstanding issues
-
 === REST Service Task 
 
 image::images/restservicetask.png[]
@@ -355,7 +353,8 @@ Build and Deploy the _soaProcessTier_ project by executing the following:
 +
 image::images/soaProjExplorer.png[]
 
-. Navigate to `Authoring -> Project Authoring -> Tools -> Project Editor`
+. To the right of the `Open Project Editor` button select the `6.1` branch from the drop down options
+. Click the `Open Project Editor` button
 . In the `Project Editor` panel, click `Build and Deploy`
 . If interested, verify deployment:
 .. Deploy -> Deployments
